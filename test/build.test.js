@@ -6,8 +6,8 @@ import File from "vinyl";
 
 import build from "../src/build";
 
-/** @test {Nozomi#build} */
-describe("Nozomi#build", () => {
+/** @test {Kotori#build} */
+describe("Kotori#build", () => {
   const testCSSFile = new File({
     path: "test.css",
     contents: new Buffer("div {\n\tdisplay: flex;\n}")

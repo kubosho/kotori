@@ -1,13 +1,13 @@
-# Nozomi (希) :crystal_ball:
+# Kotori (ことり) :baby_chick:
 
-[![Build Status](http://img.shields.io/travis/kubosho/nozomi.svg)](https://travis-ci.org/kubosho/nozomi)
-[![Build status](https://ci.appveyor.com/api/projects/status/0aionhon292p0y4q/branch/master?svg=true)](https://ci.appveyor.com/project/kubosho/nozomi/branch/master)
-[![Gemnasium](http://img.shields.io/gemnasium/kubosho/nozomi.svg)](https://gemnasium.com/kubosho/nozomi)
-[![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/kubosho/nozomi/blob/master/LICENSE)
+[![Build Status](http://img.shields.io/travis/kubosho/kotori.svg)](https://travis-ci.org/kubosho/kotori)
+[![Build status](https://ci.appveyor.com/api/projects/status/0aionhon292p0y4q/branch/master?svg=true)](https://ci.appveyor.com/project/kubosho/kotori/branch/master)
+[![Gemnasium](http://img.shields.io/gemnasium/kubosho/kotori.svg)](https://gemnasium.com/kubosho/kotori)
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/kubosho/kotori/blob/master/LICENSE)
 
 **This release is before the alpha version. NOT FOR PRODUCTION USE.**
 
-"Nozomi" is a tool that helps you write awesome CSS. 
+"Kotori" is a tool that helps you write awesome CSS.
 
 A tool concept is like [ImageOptim](https://imageoptim.com/).
 
@@ -15,10 +15,10 @@ A tool concept is like [ImageOptim](https://imageoptim.com/).
 
 ```bash
 # global install
-npm install -g nozomi
+npm install -g kotori
 
 # local install
-npm install --save-dev nozomi
+npm install --save-dev kotori
 ```
 
 ### Usage
@@ -26,20 +26,20 @@ npm install --save-dev nozomi
 #### in Command Line
 
 ```bash
-nozomi [options] <input> -o <output>
+kotori [options] <input> -o <output>
 ```
 
-Example to run "nozomi" command:
+Example to run "kotori" command:
 
 ```bash
 # file
-nozomi src/main.css
+kotori src/main.css
 
 # file(glob)
-nozomi src/*.css -o dist/
+kotori src/*.css -o dist/
 
 # directory
-nozomi src -o dist/
+kotori src -o dist/
 ```
 
 #### in Node.js modules
@@ -47,9 +47,9 @@ nozomi src -o dist/
 like [Gulp](https://github.com/gulpjs/gulp).
 
 ```javascript
-import Nozomi from "nozomi";
+import Kotori from "kotori";
 
-const nozomi = new Nozomi();
+const kotori = new Kotori();
 const config = {
   environment: "development",
   browsers: "last 2 version, > 5%, Firefox ESR",
@@ -57,12 +57,12 @@ const config = {
   sourcemap: true
 };
 
-nozomi.src("path/to/main.css")
-      .pipe(nozomi.build(config))
-      .pipe(nozomi.dest("dist/"));
+kotori.src("path/to/main.css")
+      .pipe(kotori.build(config))
+      .pipe(kotori.dest("dist/"));
 ```
 
-#### in Task Runners 
+#### in Task Runners
 
 TBD
 

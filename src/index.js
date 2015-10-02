@@ -2,7 +2,7 @@ import fs from "fs";
 import vfs from "vinyl-fs";
 import build from "./build";
 
-export default class Nozomi {
+export default class Kotori {
   /**
    * vinyl-fs.src() wrapper
    * @param {Globs} globs - takes a glob string or an array of glob strings
@@ -14,7 +14,7 @@ export default class Nozomi {
 
   /**
    * Operate on written data, then read the result of each file
-   * @param {Object} config - Nozomi config object (see: ./default-config.js)
+   * @param {Object} config - Kotori config object (see: ./default-config.js)
    * @returns {Stream} Transform stream
    */
   build(config) {

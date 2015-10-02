@@ -14,7 +14,7 @@ let currentConfig;
 
 /**
  * Operate on written data, then read the result of each file
- * @param {Object} config - Nozomi config object (see: ./default-config.js)
+ * @param {Object} config - Kotori config object (see: ./default-config.js)
  * @returns {Stream} Transform stream
  */
 export default function(config) {
@@ -79,7 +79,7 @@ function transform(file, encode, callback) {
 
 /**
  * Activating PostCSS plugins
- * @param {Object} config - Nozomi config object (see: ./default-config.js)
+ * @param {Object} config - Kotori config object (see: ./default-config.js)
  * @returns {Function[]} PostCSS plugins list
  * @private
  */

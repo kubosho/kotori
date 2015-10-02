@@ -1,13 +1,13 @@
 {
-  "name": "nozomi",
-  "description": "\"Nozomi\" helps you write awesome CSS",
+  "name": "kotori",
+  "description": "\"Kotori\" helps you write awesome CSS",
   "version": "1.0.0-alpha.1",
   "author": "kubosho",
   "bin": {
-    "nozomi": "bin/nozomi.js"
+    "kotori": "bin/kotori.js"
   },
   "bugs": {
-    "url": "https://github.com/kubosho/nozomi/issues"
+    "url": "https://github.com/kubosho/kotori/issues"
   },
   "dependencies": {
     "autoprefixer": "^6.0.3",
@@ -46,7 +46,7 @@
     "bin",
     "lib"
   ],
-  "homepage": "https://github.com/kubosho/nozomi#readme",
+  "homepage": "https://github.com/kubosho/kotori#readme",
   "keywords": [
     "css",
     "development"
@@ -55,7 +55,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/kubosho/nozomi.git"
+    "url": "git+ssh://git@github.com/kubosho/kotori.git"
   },
   "scripts": {
     "build": "babel src --out-dir lib & esdoc -c esdoc.json",

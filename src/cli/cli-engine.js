@@ -1,11 +1,11 @@
 import objectAssign from "object-assign";
 import defaultOptions from "./default-options";
 import Config from "../config";
-import Nozomi from "../index";
+import Kotori from "../index";
 
 /**
  * Create a new instance of the core CLI engine
- * @param {CLIEngineOptions} options - Nozomi CLI options object (see: ./default-options.js)
+ * @param {CLIEngineOptions} options - Kotori CLI options object (see: ./default-options.js)
  */
 export default class CLIEngline {
   constructor(options) {
@@ -19,16 +19,16 @@ export default class CLIEngline {
    * @returns {Stream} Readable/Writable stream
    */
   executeOnFiles(patterns) {
-    const nozomi = new Nozomi();
+    const kotori = new Kotori();
 
     if (patterns.length === 1) {
-      return nozomi.src(patterns[0])
-        .pipe(nozomi.build(this.config))
-        .pipe(nozomi.dest(process.cwd()));
+      return kotori.src(patterns[0])
+        .pipe(kotori.build(this.config))
+        .pipe(kotori.dest(process.cwd()));
     } else if (patterns.length <= 2) {
-      return nozomi.src(patterns[0])
-        .pipe(nozomi.build(this.config))
-        .pipe(nozomi.dest(patterns[1]));
+      return kotori.src(patterns[0])
+        .pipe(kotori.build(this.config))
+        .pipe(kotori.dest(patterns[1]));
     } else {
       console.error("specify paths of too many");
       return;

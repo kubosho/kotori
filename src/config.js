@@ -4,7 +4,7 @@ import defaultConfig from "./default-config";
 
 export default class Config {
   constructor(filePath) {
-    const LOCAL_CONFIG_FILENAME = ".nozomirc";
+    const LOCAL_CONFIG_FILENAME = ".kotorirc";
     const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;
 
     let config = {};
@@ -56,7 +56,7 @@ function readConfigFromFile(filePath) {
 
 /**
  * Operate on written data, then read the result of each file
- * @param item Nozomi config object (see: ./default-config.js)
+ * @param item Kotori config object (see: ./default-config.js)
  * @returns {Boolean} Transform stream
  * @private
  */

@@ -1,7 +1,7 @@
 const cwd = process.cwd();
 
 export default {
-  config: `${cwd}/.nozomirc`,
+  config: `${cwd}/.kotorirc`,
   output: cwd,
   watch : false
 }

@@ -3,14 +3,14 @@
 import optionator from "optionator";
 
 export default optionator({
-  prepend: "Usage: nozomi [options] <input (support glob pattern)> [-o] <output>",
+  prepend: "Usage: kotori [options] <input (support glob pattern)> [-o] <output>",
   options: [{
     heading: "Mode configuration"
   }, {
     option     : "watch",
     alias      : "w",
     type       : "Boolean",
-    description: "Watch mode for Nozomi builds"
+    description: "Watch mode for Kotori builds"
   }, {
     heading: "Path configuration"
   }, {
