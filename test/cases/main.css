@@ -1,0 +1,20 @@
+body {
+    color: #333;
+}
+
+input[type=search]::search-cancel-button,
+input[type=search]::search-decoration {
+    appearance: none;
+}
+
+.global-header {
+    background: #003760;
+}
+
+.main {
+    background: #fff;
+}
+
+.global-footer {
+    background: #003760;
+}

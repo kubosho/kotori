@@ -1,0 +1,1524 @@
+[
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/build.js",
+    "memberof": null,
+    "longname": "src/build.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import fs from \"fs\";\nimport through from \"through2\";\nimport objectAssign from \"object-assign\";\nimport autoprefixer from \"autoprefixer\";\nimport CleanCSS from \"clean-css\";\nimport cssfmt from \"cssfmt\";\nimport postcss from \"postcss\";\nimport reporter from \"postcss-reporter\";\nimport stylelint from \"stylelint\";\nimport StyleStats from \"stylestats\";\nimport defaultConfig from \"./default-config\";\n\nlet currentConfig;\n\n/**\n * Operate on written data, then read the result of each file\n * @param {Object} config - Nozomi config object (see: ./default-config.js)\n * @returns {Stream} Transform stream\n */\nexport default function(config) {\n  currentConfig = objectAssign(defaultConfig, config);\n\n  if (currentConfig.env !== void 0) {\n    currentConfig.environment = currentConfig.env;\n  }\n\n  return through.obj(transform);\n}\n\n/**\n * Operate on written data, then read the result of each file\n * @param {Buffer} file - chunk\n * @param {string} encode - file encode\n * @param {Function} callback - callback function\n * @private\n */\nfunction transform(file, encode, callback) {\n  if (file.isNull()) {\n    callback(null, file);\n    return;\n  }\n\n  if (file.isStream()) {\n    callback(Error(\"Streaming not supported\"));\n    return;\n  }\n\n  const postcssPlugins = activatePostCSSPlugins(currentConfig);\n  const processor = postcss(postcssPlugins)\n    .process(file.contents.toString(), {\n      map : file.sourceMap ? {annotation: false} : false,\n      from: file.path,\n      to  : file.path\n    });\n\n  processor\n    .then((res) => {\n      if (/product(?:ion)?/.test(currentConfig.environment)) {\n        const cleanCSS = new CleanCSS();\n        const minified = cleanCSS.minify(res.css);\n\n        file.contents = new Buffer(minified.styles);\n      }\n\n      if (currentConfig.stats) {\n        let stats = new StyleStats(file.path);\n\n        stats.parse((err, result) => {\n          console.log(JSON.stringify(result, null, 2));\n        });\n      }\n\n      setImmediate(callback, null, file);\n    })\n    .catch((err) => {\n      setImmediate(callback, err);\n    });\n}\n\n/**\n * Activating PostCSS plugins\n * @param {Object} config - Nozomi config object (see: ./default-config.js)\n * @returns {Function[]} PostCSS plugins list\n * @private\n */\nfunction activatePostCSSPlugins(config) {\n  const plugins = [];\n\n  if (config.lintRules && config.lintRules.rules) {\n    plugins.push(stylelint(config.lintRules));\n  }\n\n  if (config.browsers && config.browsers !== \"\") {\n    plugins.push(autoprefixer(config.browsers));\n  }\n\n  plugins.push(cssfmt);\n  plugins.push(reporter);\n\n  return plugins;\n}\n"
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "build",
+    "memberof": "src/build.js",
+    "longname": "src/build.js~build",
+    "access": null,
+    "export": true,
+    "importPath": "nozomi/src/build.js",
+    "importStyle": "build",
+    "description": "Operate on written data, then read the result of each file",
+    "lineNumber": 20,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Stream} Transform stream"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "config",
+        "description": "Nozomi config object (see: ./default-config.js)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Stream"
+      ],
+      "spread": false,
+      "description": "Transform stream"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "transform",
+    "memberof": "src/build.js",
+    "longname": "src/build.js~transform",
+    "access": "private",
+    "export": false,
+    "importPath": "nozomi/src/build.js",
+    "importStyle": null,
+    "description": "Operate on written data, then read the result of each file",
+    "lineNumber": 37,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Buffer"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "file",
+        "description": "chunk"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "encode",
+        "description": "file encode"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "callback",
+        "description": "callback function"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "activatePostCSSPlugins",
+    "memberof": "src/build.js",
+    "longname": "src/build.js~activatePostCSSPlugins",
+    "access": "private",
+    "export": false,
+    "importPath": "nozomi/src/build.js",
+    "importStyle": null,
+    "description": "Activating PostCSS plugins",
+    "lineNumber": 86,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Function[]} PostCSS plugins list"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "config",
+        "description": "Nozomi config object (see: ./default-config.js)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Function[]"
+      ],
+      "spread": false,
+      "description": "PostCSS plugins list"
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/cli/cli-engine.js",
+    "memberof": null,
+    "longname": "src/cli/cli-engine.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import objectAssign from \"object-assign\";\nimport defaultOptions from \"./default-options\";\nimport Config from \"../config\";\nimport Nozomi from \"../index\";\n\n/**\n * Create a new instance of the core CLI engine\n * @param {CLIEngineOptions} options - Nozomi CLI options object (see: ./default-options.js)\n */\nexport default class CLIEngline {\n  constructor(options) {\n    this.currentOptions = objectAssign(defaultOptions, options);\n    this.config = new Config(this.currentOptions.config);\n  }\n\n  /**\n   * Executes the current configuration on an array of file and directory names\n   * @param {String[]} patterns - An array of file and directory names\n   * @returns {Stream} Readable/Writable stream\n   */\n  executeOnFiles(patterns) {\n    const nozomi = new Nozomi();\n\n    if (patterns.length === 1) {\n      return nozomi.src(patterns[0])\n        .pipe(nozomi.build(this.config))\n        .pipe(nozomi.dest(process.cwd()));\n    } else if (patterns.length <= 2) {\n      return nozomi.src(patterns[0])\n        .pipe(nozomi.build(this.config))\n        .pipe(nozomi.dest(patterns[1]));\n    } else {\n      console.error(\"specify paths of too many\");\n      return;\n    }\n  }\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "CLIEngline",
+    "memberof": "src/cli/cli-engine.js",
+    "longname": "src/cli/cli-engine.js~CLIEngline",
+    "access": null,
+    "export": true,
+    "importPath": "nozomi/src/cli/cli-engine.js",
+    "importStyle": "CLIEngline",
+    "description": "Create a new instance of the core CLI engine",
+    "lineNumber": 10,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "CLIEngineOptions"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "Nozomi CLI options object (see: ./default-options.js)"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/cli/cli-engine.js~CLIEngline",
+    "longname": "src/cli/cli-engine.js~CLIEngline#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "params": [
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "currentOptions",
+    "memberof": "src/cli/cli-engine.js~CLIEngline",
+    "longname": "src/cli/cli-engine.js~CLIEngline#currentOptions",
+    "access": null,
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "config",
+    "memberof": "src/cli/cli-engine.js~CLIEngline",
+    "longname": "src/cli/cli-engine.js~CLIEngline#config",
+    "access": null,
+    "description": null,
+    "lineNumber": 13,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "executeOnFiles",
+    "memberof": "src/cli/cli-engine.js~CLIEngline",
+    "longname": "src/cli/cli-engine.js~CLIEngline#executeOnFiles",
+    "access": null,
+    "description": "Executes the current configuration on an array of file and directory names",
+    "lineNumber": 21,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Stream} Readable/Writable stream"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String[]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "patterns",
+        "description": "An array of file and directory names"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Stream"
+      ],
+      "spread": false,
+      "description": "Readable/Writable stream"
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/cli/cli.js",
+    "memberof": null,
+    "longname": "src/cli/cli.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import CLIEngine from \"./cli-engine\";\nimport defaultOptions from \"./default-options\";\nimport options from \"./options\";\nimport pkg from \"../../package.json\";\n\nexport default {\n  /**\n   * Executes the CLI based on an array of arguments that is passed\n   * @param {String[]} args - The arguments to process\n   * @returns {Number} The exit code for the operation\n   */\n  execute: (args) => {\n    console.log(args);\n    let currentOptions;\n    let stream;\n\n    try {\n      currentOptions = options.parse(args);\n    } catch (error) {\n      console.error(error.message);\n      return 1;\n    }\n\n    const files = currentOptions._;\n\n    if (currentOptions.version) {\n      console.log(\"v\" + pkg.version);\n    } else if (currentOptions.help) {\n      console.log(options.generateHelp());\n    } else {\n      const engine = new CLIEngine(translateOptions(currentOptions));\n      stream = engine.executeOnFiles(files);\n    }\n\n    return 0;\n  }\n}\n\n/**\n * Translates the CLI options into the options expected by the CLIEngine\n * @param {Object} cliOptions - The CLI options object (optionator format)\n * @returns {Object} The options object for the CLIEngine\n * @private\n */\nfunction translateOptions(cliOptions) {\n  return {\n    config: cliOptions.config || defaultOptions.config,\n    output: cliOptions.output || defaultOptions.output,\n    watch : cliOptions.watch || defaultOptions.watch\n  };\n}\n"
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "translateOptions",
+    "memberof": "src/cli/cli.js",
+    "longname": "src/cli/cli.js~translateOptions",
+    "access": "private",
+    "export": false,
+    "importPath": "nozomi/src/cli/cli.js",
+    "importStyle": null,
+    "description": "Translates the CLI options into the options expected by the CLIEngine",
+    "lineNumber": 45,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Object} The options object for the CLIEngine"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "cliOptions",
+        "description": "The CLI options object (optionator format)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "The options object for the CLIEngine"
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/cli/default-options.js",
+    "memberof": null,
+    "longname": "src/cli/default-options.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "const cwd = process.cwd();\n\nexport default {\n  config: `${cwd}/.nozomirc`,\n  output: cwd,\n  watch : false\n}\n"
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "cwd",
+    "memberof": "src/cli/default-options.js",
+    "longname": "src/cli/default-options.js~cwd",
+    "access": null,
+    "export": false,
+    "importPath": "nozomi/src/cli/default-options.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/cli/options.js",
+    "memberof": null,
+    "longname": "src/cli/options.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 3,
+    "content": "#!/usr/bin/env node\n\nimport optionator from \"optionator\";\n\nexport default optionator({\n  prepend: \"Usage: nozomi [options] <input (support glob pattern)> [-o] <output>\",\n  options: [{\n    heading: \"Mode configuration\"\n  }, {\n    option     : \"watch\",\n    alias      : \"w\",\n    type       : \"Boolean\",\n    description: \"Watch mode for Nozomi builds\"\n  }, {\n    heading: \"Path configuration\"\n  }, {\n    option     : \"config\",\n    alias      : \"c\",\n    type       : \"path::String\",\n    description: \"Use configuration from this file or shareable config\"\n  }, {\n    option     : \"output\",\n    alias      : \"o\",\n    type       : \"path::String\",\n    description: \"Specify output path\"\n  }, {\n    heading: \"Miscellaneous\"\n  }, {\n    option     : \"help\",\n    alias      : \"h\",\n    type       : \"Boolean\",\n    description: \"Show help\"\n  }, {\n    option     : \"version\",\n    alias      : \"v\",\n    type       : \"Boolean\",\n    description: \"Show version\"\n  }]\n});\n"
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/config.js",
+    "memberof": null,
+    "longname": "src/config.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import fs from \"fs\";\nimport userHome from \"user-home\";\nimport defaultConfig from \"./default-config\";\n\nexport default class Config {\n  constructor(filePath) {\n    const LOCAL_CONFIG_FILENAME = \".nozomirc\";\n    const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;\n\n    let config = {};\n\n    try {\n      config = loadConfig(PERSONAL_CONFIG_PATH);\n    } catch (err) {\n      console.info(`${PERSONAL_CONFIG_PATH} is not found.`);\n      config = loadConfig(defaultConfig);\n    }\n\n    if (filePath) {\n      try {\n        config = loadConfig(filePath);\n      } catch (err) {\n        console.info(`${filePath} is not found, will use default config.`);\n        config = loadConfig(defaultConfig);\n      }\n    }\n\n    return config;\n  }\n}\n\nfunction loadConfig(configItem) {\n  let config = {};\n\n  if (isObject(configItem)) {\n    config = configItem;\n  } else {\n    config = readConfigFromFile(configItem);\n  }\n\n  return config;\n}\n\nfunction readConfigFromFile(filePath) {\n  let config = {};\n\n  try {\n    config = fs.readFileSync(filePath, \"utf8\");\n  } catch (err) {\n    err.message = `Cannot read config file: ${filePath}\\nError: ${err.message}`;\n    throw err;\n  }\n\n  return config;\n}\n\n/**\n * Operate on written data, then read the result of each file\n * @param item Nozomi config object (see: ./default-config.js)\n * @returns {Boolean} Transform stream\n * @private\n */\nfunction isObject(item) {\n  return typeof item === \"object\" && !Array.isArray(item) && item !== null;\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "Config",
+    "memberof": "src/config.js",
+    "longname": "src/config.js~Config",
+    "access": null,
+    "export": true,
+    "importPath": "nozomi/src/config.js",
+    "importStyle": "Config",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/config.js~Config",
+    "longname": "src/config.js~Config#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "params": [
+      {
+        "name": "filePath",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "loadConfig",
+    "memberof": "src/config.js",
+    "longname": "src/config.js~loadConfig",
+    "access": null,
+    "export": false,
+    "importPath": "nozomi/src/config.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 32,
+    "undocument": true,
+    "params": [
+      {
+        "name": "configItem",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "readConfigFromFile",
+    "memberof": "src/config.js",
+    "longname": "src/config.js~readConfigFromFile",
+    "access": null,
+    "export": false,
+    "importPath": "nozomi/src/config.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 44,
+    "undocument": true,
+    "params": [
+      {
+        "name": "filePath",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isObject",
+    "memberof": "src/config.js",
+    "longname": "src/config.js~isObject",
+    "access": "private",
+    "export": false,
+    "importPath": "nozomi/src/config.js",
+    "importStyle": null,
+    "description": "Operate on written data, then read the result of each file",
+    "lineNumber": 63,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Boolean} Transform stream"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "item",
+        "description": "Nozomi config object (see: ./default-config.js)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": "Transform stream"
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/default-config.js",
+    "memberof": null,
+    "longname": "src/default-config.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import configSuitCSS from \"stylelint-config-suitcss\";\n\nexport default {\n  browsers   : [\"last 2 version\", \"> 5%\", \"Firefox ESR\"],\n  environment: \"production\",\n  lintRules  : configSuitCSS,\n  stats      : true\n}\n"
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/index.js",
+    "memberof": null,
+    "longname": "src/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import fs from \"fs\";\nimport vfs from \"vinyl-fs\";\nimport build from \"./build\";\n\nexport default class Nozomi {\n  /**\n   * vinyl-fs.src() wrapper\n   * @param {Globs} globs - takes a glob string or an array of glob strings\n   * @returns {Stream} Readable stream\n   */\n  src(globs) {\n    return vfs.src(globs);\n  }\n\n  /**\n   * Operate on written data, then read the result of each file\n   * @param {Object} config - Nozomi config object (see: ./default-config.js)\n   * @returns {Stream} Transform stream\n   */\n  build(config) {\n    return build(config);\n  }\n\n  /**\n   * vinyl-fs.dest() wrapper\n   * @param {String} folder - takes a folder path\n   * @returns {Stream} Readable/Writable stream\n   */\n  dest(folder) {\n    return vfs.dest(folder);\n  }\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "Nozomi",
+    "memberof": "src/index.js",
+    "longname": "src/index.js~Nozomi",
+    "access": null,
+    "export": true,
+    "importPath": "nozomi/src/index.js",
+    "importStyle": "Nozomi",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "src",
+    "memberof": "src/index.js~Nozomi",
+    "longname": "src/index.js~Nozomi#src",
+    "access": null,
+    "description": "vinyl-fs.src() wrapper",
+    "lineNumber": 11,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Stream} Readable stream"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Globs"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "globs",
+        "description": "takes a glob string or an array of glob strings"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Stream"
+      ],
+      "spread": false,
+      "description": "Readable stream"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "src/index.js~Nozomi",
+    "longname": "src/index.js~Nozomi#build",
+    "access": null,
+    "description": "Operate on written data, then read the result of each file",
+    "lineNumber": 20,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Stream} Transform stream"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "config",
+        "description": "Nozomi config object (see: ./default-config.js)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Stream"
+      ],
+      "spread": false,
+      "description": "Transform stream"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "dest",
+    "memberof": "src/index.js~Nozomi",
+    "longname": "src/index.js~Nozomi#dest",
+    "access": null,
+    "description": "vinyl-fs.dest() wrapper",
+    "lineNumber": 29,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Stream} Readable/Writable stream"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "folder",
+        "description": "takes a folder path"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Stream"
+      ],
+      "spread": false,
+      "description": "Readable/Writable stream"
+    },
+    "generator": false
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "testFile",
+    "static": true,
+    "variation": null,
+    "name": "test/build.test.js",
+    "memberof": null,
+    "longname": "test/build.test.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "\"use strict\";\n\nimport path from \"path\";\nimport assert from \"power-assert\";\nimport File from \"vinyl\";\n\nimport build from \"../src/build\";\n\n/** @test {Nozomi#build} */\ndescribe(\"Nozomi#build\", () => {\n  const testCSSFile = new File({\n    path: \"test.css\",\n    contents: new Buffer(\"div {\\n\\tdisplay: flex;\\n}\")\n  });\n\n  it(\"work properly\", (done) => {\n    const stream = build();\n\n    stream.on(\"data\", (file) => {\n      assert.strictEqual(/-/.test(file.contents.toString()), true);\n      assert.strictEqual(file.relative, \"test.css\");\n    });\n\n    stream.on(\"end\", done);\n\n    stream.write(testCSSFile);\n\n    stream.end();\n  });\n});\n"
+  },
+  {
+    "kind": "testDescribe",
+    "static": true,
+    "variation": null,
+    "name": "describe0",
+    "testId": 0,
+    "memberof": "test/build.test.js",
+    "testDepth": 0,
+    "longname": "test/build.test.js~describe0",
+    "access": null,
+    "description": "Nozomi#build",
+    "lineNumber": 10,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{Nozomi#build}"
+      }
+    ],
+    "testTargets": [
+      "Nozomi#build"
+    ]
+  },
+  {
+    "kind": "testIt",
+    "static": true,
+    "variation": null,
+    "name": "it1",
+    "testId": 1,
+    "memberof": "test/build.test.js~describe0",
+    "testDepth": 1,
+    "longname": "test/build.test.js~describe0.it1",
+    "access": null,
+    "description": "work properly",
+    "lineNumber": 16
+  },
+  {
+    "kind": "testFile",
+    "static": true,
+    "variation": null,
+    "name": "test/cli-engine.test.js",
+    "memberof": null,
+    "longname": "test/cli-engine.test.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "\"use strict\";\n\nimport fs from \"fs\";\nimport del from \"del\";\nimport assert from \"power-assert\";\nimport CLIEngine from \"../src/cli/cli-engine\";\n\n/** @test {CLIEngine} */\ndescribe(\"CLIEngine\", () => {\n  const outputFile = `${process.cwd()}/main.css`;\n\n  afterEach((done) => {\n    del(outputFile).then((paths) => {\n      console.log(\"Deleted files/folders:\\n\", paths.join(\"\\n\"));\n      done();\n    }).catch((err) => {\n      console.error(err);\n      done();\n    });\n  });\n\n  it(\"CSS file exists in process.cwd()\", (done) => {\n    const engine = new CLIEngine();\n    engine.executeOnFiles([`${process.cwd()}/test/cases/main.css`]);\n\n    setTimeout(() => {\n      assert.doesNotThrow(() => fs.accessSync(outputFile, fs.R_OK), Error);\n      done();\n    }, 70);\n  });\n});\n"
+  },
+  {
+    "kind": "testDescribe",
+    "static": true,
+    "variation": null,
+    "name": "describe2",
+    "testId": 2,
+    "memberof": "test/cli-engine.test.js",
+    "testDepth": 0,
+    "longname": "test/cli-engine.test.js~describe2",
+    "access": null,
+    "description": "CLIEngine",
+    "lineNumber": 9,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{CLIEngine}"
+      }
+    ],
+    "testTargets": [
+      "CLIEngine"
+    ]
+  },
+  {
+    "kind": "testIt",
+    "static": true,
+    "variation": null,
+    "name": "it3",
+    "testId": 3,
+    "memberof": "test/cli-engine.test.js~describe2",
+    "testDepth": 1,
+    "longname": "test/cli-engine.test.js~describe2.it3",
+    "access": null,
+    "description": "CSS file exists in process.cwd()",
+    "lineNumber": 22
+  },
+  {
+    "kind": "testFile",
+    "static": true,
+    "variation": null,
+    "name": "test/cli.test.js",
+    "memberof": null,
+    "longname": "test/cli.test.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "\"use strict\";\n\nimport assert from \"power-assert\";\nimport cli from \"../src/cli/cli\";\n\n/** @test {cli} */\ndescribe(\"cli\", () => {\n  /** @test {cli.execute} */\n  describe(\"options\", () => {\n    it(\"throw error of run `nozomi` (empty)\", () => {\n      assert.strictEqual(cli.execute(), 1);\n    });\n\n    it(\"throw error of run `nozomi -z` (invalid option)\", () => {\n      assert.strictEqual(cli.execute(\"-z\"), 1);\n    });\n\n    it(\"no error of run `nozomi -v`\", () => {\n      assert.strictEqual(cli.execute(\"-v\"), 0);\n    });\n\n    it(\"no error of run `nozomi -h`\", () => {\n      assert.strictEqual(cli.execute(\"-h\"), 0);\n    });\n  });\n});\n"
+  },
+  {
+    "kind": "testDescribe",
+    "static": true,
+    "variation": null,
+    "name": "describe4",
+    "testId": 4,
+    "memberof": "test/cli.test.js",
+    "testDepth": 0,
+    "longname": "test/cli.test.js~describe4",
+    "access": null,
+    "description": "cli",
+    "lineNumber": 7,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{cli}"
+      }
+    ],
+    "testTargets": [
+      "cli"
+    ]
+  },
+  {
+    "kind": "testDescribe",
+    "static": true,
+    "variation": null,
+    "name": "describe5",
+    "testId": 5,
+    "memberof": "test/cli.test.js~describe4",
+    "testDepth": 1,
+    "longname": "test/cli.test.js~describe4.describe5",
+    "access": null,
+    "description": "options",
+    "lineNumber": 9,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{cli.execute}"
+      }
+    ],
+    "testTargets": [
+      "cli.execute"
+    ]
+  },
+  {
+    "kind": "testIt",
+    "static": true,
+    "variation": null,
+    "name": "it6",
+    "testId": 6,
+    "memberof": "test/cli.test.js~describe4.describe5",
+    "testDepth": 2,
+    "longname": "test/cli.test.js~describe4.describe5.it6",
+    "access": null,
+    "description": "throw error of run `nozomi` (empty)",
+    "lineNumber": 10
+  },
+  {
+    "kind": "testIt",
+    "static": true,
+    "variation": null,
+    "name": "it7",
+    "testId": 7,
+    "memberof": "test/cli.test.js~describe4.describe5",
+    "testDepth": 2,
+    "longname": "test/cli.test.js~describe4.describe5.it7",
+    "access": null,
+    "description": "throw error of run `nozomi -z` (invalid option)",
+    "lineNumber": 14
+  },
+  {
+    "kind": "testIt",
+    "static": true,
+    "variation": null,
+    "name": "it8",
+    "testId": 8,
+    "memberof": "test/cli.test.js~describe4.describe5",
+    "testDepth": 2,
+    "longname": "test/cli.test.js~describe4.describe5.it8",
+    "access": null,
+    "description": "no error of run `nozomi -v`",
+    "lineNumber": 18
+  },
+  {
+    "kind": "testIt",
+    "static": true,
+    "variation": null,
+    "name": "it9",
+    "testId": 9,
+    "memberof": "test/cli.test.js~describe4.describe5",
+    "testDepth": 2,
+    "longname": "test/cli.test.js~describe4.describe5.it9",
+    "access": null,
+    "description": "no error of run `nozomi -h`",
+    "lineNumber": 22
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "coverage": "50%",
+  "expectCount": 12,
+  "actualCount": 6,
+  "files": {
+    "src/cli/cli-engine.js": {
+      "expectCount": 5,
+      "actualCount": 2,
+      "undocumentLines": [
+        13,
+        11,
+        12
+      ]
+    },
+    "src/config.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6
+      ]
+    },
+    "src/index.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        5
+      ]
+    },
+    "src/build.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    }
+  }
+}
