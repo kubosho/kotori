@@ -2,7 +2,8 @@
 
 [![Build Status](http://img.shields.io/travis/kubosho/kotori.svg)](https://travis-ci.org/kubosho/kotori)
 [![Build status](https://ci.appveyor.com/api/projects/status/0aionhon292p0y4q/branch/master?svg=true)](https://ci.appveyor.com/project/kubosho/kotori/branch/master)
-[![Gemnasium](http://img.shields.io/gemnasium/kubosho/kotori.svg)](https://gemnasium.com/kubosho/kotori)
+[![Code Climate](https://codeclimate.com/github/kubosho/kotori/badges/gpa.svg)](https://codeclimate.com/github/kubosho/kotori)
+[![David](https://david-dm.org/kubosho/kotori.svg)](https://gemnasium.com/kubosho/kotori)
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/kubosho/kotori/blob/master/LICENSE)
 
 **This release is before the alpha version. NOT FOR PRODUCTION USE.**
