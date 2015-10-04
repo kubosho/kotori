@@ -11,6 +11,9 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
+[*.js]
+indent_size = 2
+
 [{package,bower}.json]
 indent_size = 2
 
