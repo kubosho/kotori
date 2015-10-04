@@ -14,7 +14,7 @@ import log from "./helper/log";
 let currentConfig;
 
 /**
- * Operate on written data, then read the result of each file
+ * Kotori build based on config
  * @param {Object} config - Kotori config object (see: ./default-config.js)
  * @returns {Stream} Transform stream
  */
