@@ -9,6 +9,7 @@ import reporter from "postcss-reporter";
 import stylelint from "stylelint";
 import StyleStats from "stylestats";
 import defaultConfig from "./default-config";
+import log from "./helper/log";
 
 let currentConfig;
 
@@ -66,7 +67,7 @@ function transform(file, encode, callback) {
         let stats = new StyleStats(file.path);
 
         stats.parse((err, result) => {
-          console.log(JSON.stringify(result, null, 2));
+          log("log", JSON.stringify(result, null, 2));
         });
       }
 

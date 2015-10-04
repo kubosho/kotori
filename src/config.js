@@ -1,6 +1,7 @@
 import fs from "fs";
 import userHome from "user-home";
 import defaultConfig from "./default-config";
+import log from "./helper/log";
 
 export default class Config {
   constructor(filePath) {
@@ -12,7 +13,7 @@ export default class Config {
     try {
       config = loadConfig(PERSONAL_CONFIG_PATH);
     } catch (err) {
-      console.info(`${PERSONAL_CONFIG_PATH} is not found.`);
+      log("info", `${PERSONAL_CONFIG_PATH} is not found.`);
       config = loadConfig(defaultConfig);
     }
 
@@ -20,7 +21,7 @@ export default class Config {
       try {
         config = loadConfig(filePath);
       } catch (err) {
-        console.info(`${filePath} is not found, will use default config.`);
+        log("info", `${filePath} is not found, will use default config.`);
         config = loadConfig(defaultConfig);
       }
     }

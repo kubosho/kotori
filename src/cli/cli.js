@@ -1,5 +1,6 @@
 import CLIEngine from "./cli-engine";
 import defaultOptions from "./default-options";
+import log from "../helper/log";
 import options from "./options";
 import pkg from "../../package.json";
 
@@ -10,23 +11,22 @@ export default {
    * @returns {Number} The exit code for the operation
    */
   execute: (args) => {
-    console.log(args);
     let currentOptions;
     let stream;
 
     try {
       currentOptions = options.parse(args);
     } catch (error) {
-      console.error(error.message);
+      log("error", error.message);
       return 1;
     }
 
     const files = currentOptions._;
 
     if (currentOptions.version) {
-      console.log("v" + pkg.version);
+      log("log", `v${pkg.version}`);
     } else if (currentOptions.help) {
-      console.log(options.generateHelp());
+      log("log", options.generateHelp());
     } else {
       const engine = new CLIEngine(translateOptions(currentOptions));
       stream = engine.executeOnFiles(files);
