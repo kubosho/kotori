@@ -12,7 +12,7 @@ cache:
     - node_modules
 
 before_script:
-  - npm start
+  - npm run ci
 
 after_script:
   - $(npm bin)/coveralls < ./coverage/lcov.info

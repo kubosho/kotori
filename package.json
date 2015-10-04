@@ -59,6 +59,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir lib & esdoc -c esdoc.json",
+    "ci": "npm run build && npm run coverage",
     "coverage": "istanbul cover _mocha -- --compilers js:babel/register",
     "lint": "eslint src/**/*.js",
     "start": "npm run build && npm test",
