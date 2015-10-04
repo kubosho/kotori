@@ -1,7 +1,6 @@
 "use strict";
 
 import path from "path";
-import assert from "power-assert";
 import File from "vinyl";
 
 import build from "../src/build";

@@ -62,7 +62,7 @@
     "coverage": "istanbul cover _mocha -- --compilers js:babel/register",
     "lint": "eslint src/**/*.js",
     "start": "npm run build && npm test",
-    "test": "mocha --compilers js:espower-babel/guess test/**/*.test.js",
+    "test": "mocha --compilers js:espower-babel/guess --require test/bootstrap.js test/**/*.test.js",
     "watch": "babel src --watch --out-dir lib"
   }
 }
