@@ -5,7 +5,10 @@ init:
 
 environment:
   matrix:
-    - nodejs_version: 0.12
+    - nodejs_version: 0.12.7
+    - nodejs_version: 3.3.1
+    - nodejs_version: 4.0.0
+    - nodejs_version: 4.1.1
 
 install:
   - ps: Install-Product node $env:nodejs_version
@@ -14,7 +17,8 @@ install:
 build: off
 
 test_script:
-  - node --version && npm --version
+  - node --version
+  - npm --version
   - npm start
 
 matrix:
