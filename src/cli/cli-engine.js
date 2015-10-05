@@ -1,3 +1,4 @@
+import path from "path";
 import objectAssign from "object-assign";
 import defaultOptions from "./default-options";
 import Config from "../config";
@@ -26,8 +27,13 @@ export default class CLIEngline {
     }
 
     const kotori = new Kotori();
+    let src = patterns[0];
 
-    return kotori.src(patterns[0])
+    if (path.extname(src) === "") {
+      src = `${src}/*.*`;
+    }
+
+    return kotori.src(src)
           .pipe(kotori.build(this.config))
           .pipe(kotori.dest(this.currentOptions.output));
   }
