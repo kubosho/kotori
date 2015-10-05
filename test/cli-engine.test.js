@@ -12,7 +12,6 @@ describe("CLIEngine", () => {
     assert.throws(() => {
       engine.executeOnFiles([
         `${process.cwd()}/test/cases/main.css`,
-        `${process.cwd()}/test/cases/main.css`,
         `${process.cwd()}/test/cases/main.css`
       ]);
     }, Error);

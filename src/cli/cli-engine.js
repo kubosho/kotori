@@ -19,16 +19,16 @@ export default class CLIEngline {
    * @returns {Stream} Readable/Writable stream
    */
   executeOnFiles(patterns) {
-    const kotori = new Kotori();
-    const build = kotori.src(patterns[0])
-                        .pipe(kotori.build(this.config));
-
-    if (patterns.length > 2) {
-      throw new Error("Specify paths of too many");
-    } else if (patterns.length === 1) {
-      return build.pipe(kotori.dest(process.cwd()));
-    } else {
-      return build.pipe(kotori.dest(patterns[1]));
+    if (patterns.length > 1) {
+      throw new Error("Specify input path of too many");
+    } else if (patterns.length < 1) {
+      throw new Error("Must be specify input path");
     }
+
+    const kotori = new Kotori();
+
+    return kotori.src(patterns[0])
+          .pipe(kotori.build(this.config))
+          .pipe(kotori.dest(this.currentOptions.output));
   }
 }
