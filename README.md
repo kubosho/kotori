@@ -7,8 +7,6 @@
 [![David](https://david-dm.org/kubosho/kotori.svg)](https://david-dm.org/kubosho/kotori)
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/kubosho/kotori/blob/master/LICENSE)
 
-**This release is before the alpha version. NOT FOR PRODUCTION USE.**
-
 "Kotori" is a tool that helps you write awesome CSS.
 
 A tool concept is like [ImageOptim](https://imageoptim.com/).
@@ -50,18 +48,22 @@ like [Gulp](https://github.com/gulpjs/gulp).
 
 ```javascript
 import Kotori from "kotori";
+import configSuitCSS from "stylelint-config-suitcss";
 
 const kotori = new Kotori();
 const config = {
   environment: "development",
   browsers: "last 2 version, > 5%, Firefox ESR",
-  stats: true,
-  sourcemap: true
+  lintRules: configSuitCSS,
+  stats: {
+    outputFormat: "json",
+    outputDir: "stats"
+  }
 };
 
 kotori.src("path/to/main.css")
-      .pipe(kotori.build(config))
-      .pipe(kotori.dest("dist/"));
+  .pipe(kotori.build(config))
+  .pipe(kotori.dest("dist/"));
 ```
 
 #### in Task Runners
