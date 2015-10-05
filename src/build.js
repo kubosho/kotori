@@ -7,9 +7,9 @@ import cssfmt from "cssfmt";
 import postcss from "postcss";
 import reporter from "postcss-reporter";
 import stylelint from "stylelint";
-import StyleStats from "stylestats";
 import defaultConfig from "./default-config";
 import log from "./helper/log";
+import Stats from "./stats";
 
 let currentConfig;
 
@@ -42,7 +42,7 @@ function transform(file, encode, callback) {
   }
 
   if (file.isStream()) {
-    callback(Error("Streaming not supported"));
+    callback(Error("Stream is not supported"));
     return;
   }
 
@@ -64,11 +64,7 @@ function transform(file, encode, callback) {
       }
 
       if (currentConfig.stats) {
-        let stats = new StyleStats(file.path);
-
-        stats.parse((err, result) => {
-          log("log", JSON.stringify(result, null, 2));
-        });
+        new Stats(file, currentConfig.stats, callback);
       }
 
       setImmediate(callback, null, file);
