@@ -12,7 +12,6 @@ export default {
    */
   execute: (args) => {
     let currentOptions;
-    let stream;
 
     try {
       currentOptions = options.parse(args);
@@ -27,9 +26,17 @@ export default {
       log("log", `v${pkg.version}`);
     } else if (currentOptions.help) {
       log("log", options.generateHelp());
+    }
+
+    if (currentOptions.version || currentOptions.help) {
+      return 0;
+    }
+
+    if (currentOptions.watch) {
+      // TODO: Implement watch mode. It maybe using chokidar.
     } else {
       const engine = new CLIEngine(translateOptions(currentOptions));
-      stream = engine.executeOnFiles(files);
+      engine.executeOnFiles(files);
     }
 
     return 0;
