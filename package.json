@@ -36,7 +36,7 @@
     "istanbul": "^0.3.21",
     "mocha": "^2.3.3",
     "npm-check": "^4.0.3",
-    "power-assert": "^1.0.1",
+    "power-assert": "^1.1.0",
     "vinyl": "^0.5.3"
   },
   "directories": {
