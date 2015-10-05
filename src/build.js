@@ -64,7 +64,7 @@ function transform(file, encode, callback) {
       }
 
       if (currentConfig.stats) {
-        new Stats(file, currentConfig.stats, callback);
+        new Stats(file, currentConfig.stats);
       }
 
       setImmediate(callback, null, file);

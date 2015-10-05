@@ -4,12 +4,12 @@ import StyleStats from "stylestats";
 import Format from "stylestats/lib/format";
 
 export default class Stats {
-  constructor(file, statsConfig, callback) {
+  constructor(file, statsConfig) {
     const stats = new StyleStats(file.path);
 
     stats.parse((err, result) => {
       if (err !== null) {
-        return callback(`StyleStats error: ${err} in ${file.path}`);
+        throw new Error(`StyleStats error: ${err} in ${file.path}`);
       }
 
       const format = new Format(result);
@@ -50,8 +50,6 @@ export default class Stats {
           fs.mkdirSync(outputDir);
           fs.writeFileSync(`${outputDir}/${file.path}`, file.contents);
         }
-
-        callback(null);
       });
     });
   }
