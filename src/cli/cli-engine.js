@@ -34,7 +34,7 @@ export default class CLIEngline {
     }
 
     return kotori.src(src)
-          .pipe(kotori.build(this.config))
-          .pipe(kotori.dest(this.currentOptions.output));
+      .pipe(kotori.build(this.config))
+      .pipe(kotori.dest(this.currentOptions.output));
   }
 }

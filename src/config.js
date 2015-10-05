@@ -57,8 +57,8 @@ function readConfigFromFile(filePath) {
 
 /**
  * Operate on written data, then read the result of each file
- * @param item Kotori config object (see: ./default-config.js)
- * @returns {Boolean} Transform stream
+ * @param item - Any object
+ * @returns {Boolean}
  * @private
  */
 function isObject(item) {
