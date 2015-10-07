@@ -41,6 +41,12 @@ export default class Config {
   }
 }
 
+/**
+ * Load config from object or local config file
+ * @param {Object|String} configItem - Config object or file path
+ * @returns {Object} Kotori config
+ * @private
+ */
 function loadConfig(configItem) {
   let config = {};
 
@@ -53,6 +59,12 @@ function loadConfig(configItem) {
   return config;
 }
 
+/**
+ * Read the Kotori config file from local
+ * @param {String} filePath - Config file path (JSON or Object format)
+ * @returns {Object} Kotori config
+ * @private
+ */
 function readConfigFromFile(filePath) {
   let config = {};
 
