@@ -15,7 +15,7 @@ let currentConfig;
 
 /**
  * Kotori build based on config
- * @param {Object} config - Kotori config object (see: ./default-config.js)
+ * @param {Object} config - Kotori config object
  * @returns {Stream} Transform stream
  */
 export default function(config) {
@@ -31,7 +31,7 @@ export default function(config) {
 /**
  * Operate on written data, then read the result of each file
  * @param {Buffer} file - chunk
- * @param {string} encode - file encode
+ * @param {String} encode - file encode
  * @param {Function} callback - callback function
  * @private
  */
@@ -76,7 +76,7 @@ function transform(file, encode, callback) {
 
 /**
  * Activating PostCSS plugins
- * @param {Object} config - Kotori config object (see: ./default-config.js)
+ * @param {Object} config - Kotori config object
  * @returns {Function[]} PostCSS plugins list
  * @private
  */

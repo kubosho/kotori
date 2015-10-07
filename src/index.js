@@ -5,7 +5,7 @@ import build from "./build";
 export default class Kotori {
   /**
    * vinyl-fs.src() wrapper
-   * @param {Globs} globs - takes a glob string or an array of glob strings
+   * @param {String} globs - takes a glob string or an array of glob strings
    * @returns {Stream} Readable stream
    */
   src(globs) {
@@ -14,7 +14,7 @@ export default class Kotori {
 
   /**
    * Operate on written data, then read the result of each file
-   * @param {Object} config - Kotori config object (see: ./default-config.js)
+   * @param {Object} config - Kotori config object
    * @returns {Stream} Transform stream
    */
   build(config) {

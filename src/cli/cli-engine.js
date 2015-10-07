@@ -6,7 +6,7 @@ import Kotori from "../index";
 
 /**
  * Create a new instance of the core CLI engine
- * @param {CLIEngineOptions} options - Kotori CLI options object (see: ./default-options.js)
+ * @param {Object} options - Kotori CLI options object (see: ./default-options.js)
  */
 export default class CLIEngline {
   constructor(options) {

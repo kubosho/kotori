@@ -56,8 +56,8 @@ function readConfigFromFile(filePath) {
 }
 
 /**
- * Operate on written data, then read the result of each file
- * @param item - Any object
+ * If an object is an object, returns true. false if it is not
+ * @param {Object} item - Any object
  * @returns {Boolean}
  * @private
  */

@@ -1,7 +1,7 @@
 /**
  * console.(log|info|error|warn) wrapper
- * @param {string} type - Console log type (see: https://nodejs.org/api/console.html)
- * @param {any} data - Prints to stdout (maybe stderr)
+ * @param {string} type - Console log type ("log"|"info"|"error"|"warn")
+ * @param {any} data - Prints to stdout (if specify "error" or "warn" at type param, output stderr)
  * @private
  */
 export default function(type, ...data) {
