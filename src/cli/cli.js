@@ -1,5 +1,4 @@
 import CLIEngine from "./cli-engine";
-import defaultOptions from "./default-options";
 import log from "../helper/log";
 import options from "./options";
 import pkg from "../../package.json";
@@ -51,8 +50,8 @@ export default {
  */
 function translateOptions(cliOptions) {
   return {
-    config: cliOptions.config || defaultOptions.config,
-    output: cliOptions.output || defaultOptions.output,
-    watch : cliOptions.watch || defaultOptions.watch
+    config: cliOptions.config,
+    output: cliOptions.output,
+    watch : cliOptions.watch
   };
 }

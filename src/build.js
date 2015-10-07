@@ -1,13 +1,11 @@
 import fs from "fs";
 import through from "through2";
-import objectAssign from "object-assign";
 import autoprefixer from "autoprefixer";
 import CleanCSS from "clean-css";
 import cssfmt from "cssfmt";
 import postcss from "postcss";
 import reporter from "postcss-reporter";
 import stylelint from "stylelint";
-import defaultConfig from "./default-config";
 import log from "./helper/log";
 import Stats from "./stats";
 
@@ -19,7 +17,7 @@ let currentConfig;
  * @returns {Stream} Transform stream
  */
 export default function(config) {
-  currentConfig = objectAssign(defaultConfig, config);
+  currentConfig = config;
 
   if (currentConfig.env !== void 0) {
     currentConfig.environment = currentConfig.env;

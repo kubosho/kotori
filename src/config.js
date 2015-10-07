@@ -1,13 +1,24 @@
 import fs from "fs";
+import configSuitCSS from "stylelint-config-suitcss";
 import userHome from "user-home";
-import defaultConfig from "./default-config";
 import log from "./helper/log";
+
+const defaultConfig = {
+  browsers   : ["last 2 version", "> 5%", "Firefox ESR"],
+  environment: "production",
+  lintRules  : configSuitCSS,
+  stats      : {
+    outputFormat: "json",
+    outputDir   : "stats",
+    templateFile: ""
+  }
+};
+
+const LOCAL_CONFIG_FILENAME = ".kotorirc";
+const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;
 
 export default class Config {
   constructor(filePath) {
-    const LOCAL_CONFIG_FILENAME = ".kotorirc";
-    const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;
-
     let config = {};
 
     try {

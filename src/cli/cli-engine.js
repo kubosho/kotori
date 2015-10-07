@@ -1,8 +1,13 @@
 import path from "path";
 import objectAssign from "object-assign";
-import defaultOptions from "./default-options";
 import Config from "../config";
 import Kotori from "../index";
+
+const defaultOptions = {
+  config: "",
+  output: process.cwd(),
+  watch : false
+};
 
 /**
  * Create a new instance of the core CLI engine
