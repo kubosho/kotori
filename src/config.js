@@ -20,21 +20,29 @@ const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` :
 export default class Config {
   constructor(filePath) {
     let config = {};
+    let error = null;
 
     try {
       config = loadConfig(PERSONAL_CONFIG_PATH);
     } catch (err) {
-      log("info", `${PERSONAL_CONFIG_PATH} is not found.`);
-      config = loadConfig(defaultConfig);
+      error = err;
     }
 
-    if (filePath) {
+    if (filePath !== "") {
       try {
         config = loadConfig(filePath);
       } catch (err) {
-        log("info", `${filePath} is not found, will use default config.`);
-        config = loadConfig(defaultConfig);
+        error = err;
       }
+    }
+
+    if (error !== null) {
+      let paths = filePath === ""
+        ? PERSONAL_CONFIG_PATH
+        : `${PERSONAL_CONFIG_PATH} and ${filePath}`;
+
+      log("info", `${paths} is not found, will use default config.`);
+      config = loadConfig(DEFAULT_CONFIG);
     }
 
     return config;
@@ -52,8 +60,10 @@ function loadConfig(configItem) {
 
   if (isObject(configItem)) {
     config = configItem;
-  } else {
+  } else if (typeof configItem === "string") {
     config = readConfigFromFile(configItem);
+  } else {
+    throw new Error("Unexpected config item type.");
   }
 
   return config;
@@ -66,16 +76,12 @@ function loadConfig(configItem) {
  * @private
  */
 function readConfigFromFile(filePath) {
-  let config = {};
-
   try {
-    config = fs.readFileSync(filePath, "utf8");
+    return fs.readFileSync(filePath, "utf8");
   } catch (err) {
     err.message = `Cannot read config file: ${filePath}\nError: ${err.message}`;
     throw err;
   }
-
-  return config;
 }
 
 /**
