@@ -3,7 +3,7 @@ import objectAssign from "object-assign";
 import Config from "../config";
 import Kotori from "../index";
 
-const defaultOptions = {
+const DEFAULT_OPTIONS = {
   config: "",
   output: process.cwd(),
   watch : false
@@ -15,7 +15,7 @@ const defaultOptions = {
  */
 export default class CLIEngline {
   constructor(options) {
-    this.currentOptions = objectAssign(defaultOptions, options);
+    this.currentOptions = objectAssign(DEFAULT_OPTIONS, options);
     this.config = new Config(this.currentOptions.config);
   }
 

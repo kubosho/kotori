@@ -3,7 +3,7 @@ import configSuitCSS from "stylelint-config-suitcss";
 import userHome from "user-home";
 import log from "./helper/log";
 
-const defaultConfig = {
+const DEFAULT_CONFIG = {
   browsers   : ["last 2 version", "> 5%", "Firefox ESR"],
   environment: "production",
   lintRules  : configSuitCSS,
