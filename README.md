@@ -10,7 +10,7 @@
 [![Code Climate](https://codeclimate.com/github/kubosho/kotori/badges/gpa.svg)](https://codeclimate.com/github/kubosho/kotori)
 [![Coverage Status](https://coveralls.io/repos/kubosho/kotori/badge.svg?branch=master&service=github)](https://coveralls.io/github/kubosho/kotori?branch=master)
 
-"Kotori" is a tool that automatically format and evaluate for CSS.
+Kotori is a tool that automatically format and evaluate for CSS.
 
 Kotori seamlessly integrates the better tools: [stylelint](https://github.com/stylelint/stylelint), [Autoprefixer](https://github.com/postcss/autoprefixer), [CSSfmt](https://github.com/morishitter/cssfmt), [clean-css](https://github.com/jakubpawlowicz/clean-css) and [StyleStats](https://github.com/t32k/stylestats).
 
@@ -24,15 +24,21 @@ npm install -g kotori
 npm install --save-dev kotori
 ```
 
-### Usage
+## Usage
 
-#### in Command Line
+### in Command Line
 
 ```bash
 kotori [options] <input> -o <output>
 ```
 
-Example to run "kotori" command:
+CLI help:
+
+```bash
+$ kotori -h
+```
+
+Example to run `kotori` command:
 
 ```bash
 # file
@@ -45,7 +51,7 @@ kotori src/*.css -o dist/
 kotori src -o dist/
 ```
 
-#### in Node.js modules
+### in Node.js modules
 
 like [gulp](https://github.com/gulpjs/gulp) architecture.
 
@@ -72,9 +78,39 @@ kotori.src("path/to/main.css")
   .pipe(kotori.dest("dist/"));
 ```
 
-#### in Task Runners
+### in Task Runners
 
-TBD
+#### gulp
+
+```javascript
+import gulp from "gulp";
+import Kotori from "kotori";
+
+const kotori = new Kotori();
+const kotoriConfig = {
+  "browsers" : [
+    "last 2 version",
+    "> 5%",
+    "Firefox ESR"
+  ],
+  "env"      : "production",
+  "lintRules": "stylelint-config-suitcss",
+  "stats"    : {
+    "outputFormat": "json",
+    "outputDir"   : "stats"
+  }
+};
+
+gulp.task("build:production", () => {
+  return gulp.src("path/to/main.css")
+    .pipe(kotori.build(kotoriConfig))
+    .pipe(gulp.dest("path/to/dir"));
+});
+```
+
+#### other
+
+Coming soon...
 
 ## License
 
