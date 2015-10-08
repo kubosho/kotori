@@ -88,9 +88,18 @@ function transform(file, encode, callback) {
  */
 function activatePostCSSPlugins(config) {
   const plugins = [];
+  let lintRules = null;
 
-  if (config.lintRules && config.lintRules.rules) {
-    plugins.push(stylelint(config.lintRules));
+  try {
+    lintRules = require(config.lintRules);
+  } catch (err) {
+    throw err;
+  }
+
+  if (lintRules.rules) {
+    plugins.push(stylelint(lintRules));
+  } else {
+    throw new Error("Illegal lint rule: \"rules\" property is not found.");
   }
 
   if (config.browsers && config.browsers !== "") {
