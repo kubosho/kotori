@@ -13,7 +13,7 @@ let currentConfig;
 
 /**
  * Kotori build based on config
- * @param {Object} config - Kotori config object
+ * @param {Object} conf - Kotori config (object or JSON)
  * @returns {Stream} Transform stream
  */
 export default function(config) {

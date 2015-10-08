@@ -14,11 +14,11 @@ export default class Kotori {
 
   /**
    * Operate on written data, then read the result of each file
-   * @param {Object} config - Kotori config object
+   * @param {Object} conf - Kotori config object
    * @returns {Stream} Transform stream
    */
-  build(config) {
-    return build(config);
+  build(conf) {
+    return build(conf);
   }
 
   /**

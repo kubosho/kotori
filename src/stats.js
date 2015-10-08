@@ -4,7 +4,7 @@ import StyleStats from "stylestats";
 import Format from "stylestats/lib/format";
 
 export default class Stats {
-  constructor(file, statsConfig) {
+  constructor(file, statsConf) {
     const stats = new StyleStats(file.path);
 
     stats.parse((err, result) => {
@@ -14,9 +14,9 @@ export default class Stats {
 
       const format = new Format(result);
       let method = "toTable";
-      let extension = `.${statsConfig.outputFormat}`;
+      let extension = `.${statsConf.outputFormat}`;
 
-      switch (statsConfig.outputFormat) {
+      switch (statsConf.outputFormat) {
         case "json":
           method = "toJSON";
           break;
@@ -30,7 +30,7 @@ export default class Stats {
           method = "toMarkdown";
           break;
         case "template":
-          format.setTemplate(fs.readFileSync(statsConfig.templateFile, {
+          format.setTemplate(fs.readFileSync(statsConf.templateFile, {
             encoding: "utf8"
           }));
           extension = ".html";
@@ -44,8 +44,8 @@ export default class Stats {
         file.contents = new Buffer(data);
         file.path = `${path.basename(file.path, path.extname(file.path))}${extension}`;
 
-        if (statsConfig.outputDir && statsConfig.outputDir !== "") {
-          const outputDir = `${process.cwd()}/${statsConfig.outputDir}`
+        if (statsConf.outputDir && statsConf.outputDir !== "") {
+          const outputDir = `${process.cwd()}/${statsConf.outputDir}`
 
           fs.mkdirSync(outputDir);
           fs.writeFileSync(`${outputDir}/${file.path}`, file.contents);
