@@ -17,5 +17,8 @@ indent_size = 2
 [{package,bower}.json]
 indent_size = 2
 
+[.kotorirc]
+indent_size = 2
+
 [*.yml]
 indent_size = 2

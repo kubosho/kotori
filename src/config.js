@@ -1,51 +1,47 @@
 import fs from "fs";
-import configSuitCSS from "stylelint-config-suitcss";
+import path from "path";
 import userHome from "user-home";
 import log from "./helper/log";
 
-const DEFAULT_CONFIG = {
-  browsers   : ["last 2 version", "> 5%", "Firefox ESR"],
-  environment: "production",
-  lintRules  : configSuitCSS,
-  stats      : {
-    outputFormat: "json",
-    outputDir   : "stats",
-    templateFile: ""
-  }
-};
-
+const KOTORI_CONFIG_DIR = path.resolve(__dirname, "../conf/");
 const LOCAL_CONFIG_FILENAME = ".kotorirc";
 const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;
 
 export default class Config {
   constructor(filePath) {
-    let config = {};
-    let error = null;
+    this.config = null;
+    this.configLoadError = [];
 
     try {
-      config = loadConfig(PERSONAL_CONFIG_PATH);
+      this.config = loadConfig(PERSONAL_CONFIG_PATH);
     } catch (err) {
-      error = err;
+      this.configLoadError.push(err.message);
     }
 
-    if (filePath !== "") {
-      try {
-        config = loadConfig(filePath);
-      } catch (err) {
-        error = err;
-      }
+    try {
+      this.config = loadConfig(filePath);
+    } catch (err) {
+      this.configLoadError.push(err.message);
     }
 
-    if (error !== null) {
-      let paths = filePath === ""
-        ? PERSONAL_CONFIG_PATH
-        : `${PERSONAL_CONFIG_PATH} and ${filePath}`;
+    if (this.configLoadError.length === 1) {
+      this.configLoadError = [];
+    }
+  }
 
+  /**
+   * Build the Kotori config object
+   * @returns {Object} Kotori config
+ */
+  getConfig() {
+    if (this.config === null && this.configLoadError.length > 0) {
+      const paths = `${PERSONAL_CONFIG_PATH} and ${path.resolve(__dirname, LOCAL_CONFIG_FILENAME)}`;
+
+      this.config = loadConfig(`${KOTORI_CONFIG_DIR}/${LOCAL_CONFIG_FILENAME}`);
       log("info", `${paths} is not found, will use default config.`);
-      config = loadConfig(DEFAULT_CONFIG);
     }
 
-    return config;
+    return this.config;
   }
 }
 
@@ -79,7 +75,6 @@ function readConfigFromFile(filePath) {
   try {
     return fs.readFileSync(filePath, "utf8");
   } catch (err) {
-    err.message = `Cannot read config file: ${filePath}\nError: ${err.message}`;
     throw err;
   }
 }

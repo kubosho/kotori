@@ -6,18 +6,26 @@ import cssfmt from "cssfmt";
 import postcss from "postcss";
 import reporter from "postcss-reporter";
 import stylelint from "stylelint";
-import log from "./helper/log";
+import Config from "./config";
 import Stats from "./stats";
+import log from "./helper/log";
 
 let currentConfig;
+const config = new Config();
 
 /**
  * Kotori build based on config
  * @param {Object} conf - Kotori config (object or JSON)
  * @returns {Stream} Transform stream
  */
-export default function(config) {
-  currentConfig = config;
+export default function(conf) {
+  currentConfig = conf || config.getConfig();
+
+  try {
+    currentConfig = JSON.parse(currentConfig);
+  } catch (err) {
+    // do nothing
+  }
 
   if (currentConfig.env !== void 0) {
     currentConfig.environment = currentConfig.env;
