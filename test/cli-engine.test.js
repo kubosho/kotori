@@ -14,6 +14,6 @@ describe("CLIEngine", () => {
         `${process.cwd()}/test/cases/main.css`,
         `${process.cwd()}/test/cases/main.css`
       ]);
-    }, Error);
+    }, /too many/);
   });
 });
