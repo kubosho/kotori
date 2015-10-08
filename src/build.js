@@ -62,12 +62,14 @@ function transform(file, encode, callback) {
 
   processor
     .then((res) => {
-      if (/product(?:ion)?/.test(currentConfig.environment)) {
-        const cleanCSS = new CleanCSS();
-        const minified = cleanCSS.minify(res.css);
+      let contents = res.css;
 
-        file.contents = new Buffer(minified.styles);
+      if (/product(?:ion)?/.test(currentConfig.environment)) {
+        const minified = new CleanCSS().minify(res.css);
+        contents = minified.styles;
       }
+
+      file.contents = new Buffer(contents);
 
       if (currentConfig.stats) {
         new Stats(file, currentConfig.stats);
