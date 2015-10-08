@@ -1,7 +1,7 @@
 {
   "name": "kotori",
   "description": "\"Kotori\" helps you write awesome CSS",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "kubosho",
   "bin": {
     "kotori": "bin/kotori.js"
