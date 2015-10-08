@@ -36,7 +36,7 @@ export default function(conf) {
 
 /**
  * Operate on written data, then read the result of each file
- * @param {Buffer} file - chunk
+ * @param {File} file - chunk
  * @param {String} encode - file encode
  * @param {Function} callback - callback function
  * @private
