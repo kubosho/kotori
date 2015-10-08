@@ -1,6 +1,6 @@
 {
   "name": "kotori",
-  "description": "\"Kotori\" helps you write awesome CSS",
+  "description": "Kotori is a tool that automatically format and evaluate for CSS",
   "version": "0.2.2",
   "author": "kubosho",
   "bin": {
