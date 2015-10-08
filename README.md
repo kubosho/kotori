@@ -10,7 +10,7 @@
 [![Code Climate](https://codeclimate.com/github/kubosho/kotori/badges/gpa.svg)](https://codeclimate.com/github/kubosho/kotori)
 [![Coverage Status](https://coveralls.io/repos/kubosho/kotori/badge.svg?branch=master&service=github)](https://coveralls.io/github/kubosho/kotori?branch=master)
 
-"Kotori" is a tool that automatically formatted and evaluate for CSS.
+"Kotori" is a tool that automatically format and evaluate for CSS.
 
 Kotori seamlessly integrates the better tools: [stylelint](https://github.com/stylelint/stylelint), [Autoprefixer](https://github.com/postcss/autoprefixer), [CSSfmt](https://github.com/morishitter/cssfmt), [clean-css](https://github.com/jakubpawlowicz/clean-css) and [StyleStats](https://github.com/t32k/stylestats).
 
@@ -47,7 +47,7 @@ kotori src -o dist/
 
 #### in Node.js modules
 
-like [Gulp](https://github.com/gulpjs/gulp).
+like [gulp](https://github.com/gulpjs/gulp) architecture.
 
 ```javascript
 import Kotori from "kotori";
@@ -78,8 +78,6 @@ TBD
 
 ## License
 
-MIT License
+The MIT License
 
-## Author
-
-[kubosho_](https://github.com/kubosho) ([Twitter](https://twitter.com/kubosho_))
+Copyright (c) 2015 Shota Kubota
