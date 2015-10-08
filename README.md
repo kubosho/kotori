@@ -51,16 +51,19 @@ like [Gulp](https://github.com/gulpjs/gulp).
 
 ```javascript
 import Kotori from "kotori";
-import configSuitCSS from "stylelint-config-suitcss";
 
 const kotori = new Kotori();
 const config = {
-  environment: "development",
-  browsers: "last 2 version, > 5%, Firefox ESR",
-  lintRules: configSuitCSS,
-  stats: {
-    outputFormat: "json",
-    outputDir: "stats"
+  "browsers" : [
+    "last 2 version",
+    "> 5%",
+    "Firefox ESR"
+  ],
+  "env"      : "production",
+  "lintRules": "stylelint-config-suitcss",
+  "stats"    : {
+    "outputFormat": "json",
+    "outputDir"   : "stats"
   }
 };
 
