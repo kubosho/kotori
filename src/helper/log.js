@@ -5,7 +5,7 @@
  * @private
  */
 export default function(type, ...data) {
-  if (process.env.NODE_ENV = "test") {
+  if (process.env.NODE_ENV === "test") {
     return;
   }
 
