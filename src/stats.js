@@ -41,14 +41,14 @@ export default class Stats {
       }
 
       format[method]((data) => {
-        file.contents = new Buffer(data);
-        file.path = `${path.basename(file.path, path.extname(file.path))}${extension}`;
+        const statsContents = new Buffer(data);
+        const statsPath = `${path.basename(file.path, path.extname(file.path))}${extension}`;
 
         if (statsConf.outputDir && statsConf.outputDir !== "") {
           const outputDir = `${process.cwd()}/${statsConf.outputDir}`
 
           fs.mkdirSync(outputDir);
-          fs.writeFileSync(`${outputDir}/${file.path}`, file.contents);
+          fs.writeFileSync(`${outputDir}/${statsPath}`, statsContents);
         }
       });
     });
