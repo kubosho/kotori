@@ -5,7 +5,7 @@ import Kotori from "../index";
 
 const DEFAULT_OPTIONS = {
   config: "",
-  output: process.cwd(),
+  output: null,
   watch : false
 };
 
@@ -16,7 +16,11 @@ const DEFAULT_OPTIONS = {
 export default class CLIEngline {
   constructor(options) {
     this.currentOptions = objectAssign(DEFAULT_OPTIONS, options);
-    this.config = new Config(this.currentOptions.config);
+    this.config = new Config(this.currentOptions.config).getConfig();
+
+    if (this.currentOptions.output === "" || this.currentOptions.output == null) {
+      this.currentOptions.output = process.cwd();
+    }
   }
 
   /**

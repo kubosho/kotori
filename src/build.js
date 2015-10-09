@@ -11,7 +11,6 @@ import Stats from "./stats";
 import log from "./helper/log";
 
 let currentConfig;
-const config = new Config();
 
 /**
  * Kotori build based on config
@@ -19,7 +18,7 @@ const config = new Config();
  * @returns {Stream} Transform stream
  */
 export default function(conf) {
-  currentConfig = conf || config.getConfig();
+  currentConfig = conf || new Config().getConfig();
 
   try {
     currentConfig = JSON.parse(currentConfig);

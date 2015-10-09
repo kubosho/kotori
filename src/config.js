@@ -35,7 +35,7 @@ export default class Config {
  */
   getConfig() {
     if (this.config === null && this.configLoadError.length > 0) {
-      const paths = `${PERSONAL_CONFIG_PATH} and ${path.resolve(__dirname, LOCAL_CONFIG_FILENAME)}`;
+      const paths = `${PERSONAL_CONFIG_PATH} and ${path.resolve(process.cwd(), LOCAL_CONFIG_FILENAME)}`;
 
       this.config = loadConfig(`${KOTORI_CONFIG_DIR}/${LOCAL_CONFIG_FILENAME}`);
       log("info", `${paths} is not found, will use default config.`);
