@@ -31,5 +31,6 @@ node_modules/
 .idea/
 lib/
 doc/
+stats/
 
 # Created by .ignore support plugin (hsz.mobi)
