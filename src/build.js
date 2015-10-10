@@ -89,13 +89,7 @@ function transform(file, encode, callback) {
  */
 function activatePostCSSPlugins(config) {
   const plugins = [];
-  let lintRules = null;
-
-  try {
-    lintRules = require(config.lintRules);
-  } catch (err) {
-    throw err;
-  }
+  const lintRules = require(config.lintRules);
 
   if (lintRules.rules) {
     plugins.push(stylelint(lintRules));

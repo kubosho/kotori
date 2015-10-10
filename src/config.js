@@ -72,11 +72,7 @@ function loadConfig(configItem) {
  * @private
  */
 function readConfigFromFile(filePath) {
-  try {
-    return fs.readFileSync(filePath, "utf8");
-  } catch (err) {
-    throw err;
-  }
+  return fs.readFileSync(filePath, "utf8");
 }
 
 /**
