@@ -13,6 +13,7 @@
     "autoprefixer": "^6.0.3",
     "clean-css": "^3.4.4",
     "cssfmt": "^1.3.4",
+    "moment": "^2.10.6",
     "object-assign": "^4.0.1",
     "optionator": "^0.6.0",
     "postcss": "^5.0.6",

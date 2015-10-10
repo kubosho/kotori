@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import moment from "moment";
 import StyleStats from "stylestats";
 import Format from "stylestats/lib/format";
 
@@ -42,12 +43,19 @@ export default class Stats {
 
       format[method]((data) => {
         const statsContents = new Buffer(data);
-        const statsPath = `${path.basename(file.path, path.extname(file.path))}${extension}`;
+        const statsFileName = path.basename(filePath, path.extname(filePath));
+        const statsTimeStamp = moment().format("YYYYMMDDHHmmss");
+        const statsPath = `${statsFileName}.${statsTimeStamp}${extension}`;
 
         if (statsConf.outputDir && statsConf.outputDir !== "") {
-          const outputDir = `${process.cwd()}/${statsConf.outputDir}`
+          const outputDir = `${process.cwd()}/${statsConf.outputDir}`;
 
-          fs.mkdirSync(outputDir);
+          try {
+            fs.accessSync(outputDir);
+          } catch (err) {
+            fs.mkdirSync(outputDir);
+          }
+
           fs.writeFileSync(`${outputDir}/${statsPath}`, statsContents);
         }
       });
