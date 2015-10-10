@@ -4,12 +4,12 @@ import StyleStats from "stylestats";
 import Format from "stylestats/lib/format";
 
 export default class Stats {
-  constructor(file, statsConf) {
-    const stats = new StyleStats(file.path);
+  constructor(filePath, statsConf) {
+    const stats = new StyleStats(filePath);
 
     stats.parse((err, result) => {
       if (err !== null) {
-        throw new Error(`StyleStats error: ${err} in ${file.path}`);
+        throw new Error(`StyleStats error: ${err} in ${filePath}`);
       }
 
       const format = new Format(result);

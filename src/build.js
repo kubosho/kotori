@@ -71,7 +71,7 @@ function transform(file, encode, callback) {
       file.contents = new Buffer(contents);
 
       if (currentConfig.stats) {
-        new Stats(file, currentConfig.stats);
+        new Stats(file.path, currentConfig.stats);
       }
 
       setImmediate(callback, null, file);
