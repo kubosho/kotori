@@ -9,6 +9,7 @@
   "stats"    : {
     "outputFormat": "json",
     "outputDir"   : "stats",
+    "timestamp"   : false,
     "templateFile": ""
   }
 }
