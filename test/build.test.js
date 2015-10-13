@@ -26,7 +26,7 @@ describe("Kotori#build", () => {
 
     stream.on("data", (file) => {
       assert.strictEqual(/-/.test(file.contents.toString()), true);
-      assert.strictEqual(file.relative, "test/cases/main.css");
+      assert.strictEqual(file.relative, path.join("test", "cases", "main.css"));
     });
 
     stream.on("end", done);
