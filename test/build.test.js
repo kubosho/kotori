@@ -1,5 +1,6 @@
 "use strict";
 
+import fs from "fs";
 import path from "path";
 import File from "vinyl";
 
@@ -7,9 +8,17 @@ import build from "../src/build";
 
 /** @test {Kotori#build} */
 describe("Kotori#build", () => {
-  const testCSSFile = new File({
-    path: "test.css",
-    contents: new Buffer("div {\n\tdisplay: flex;\n}")
+  const testCSSPath = `${process.cwd()}/test/cases/main.css`;
+  let testCSSFile = null;
+
+  before((done) => {
+    fs.readFile(testCSSPath, (err, data) => {
+      testCSSFile = new File({
+        path: testCSSPath,
+        contents: data
+      });
+      done();
+    });
   });
 
   it("work properly", (done) => {
@@ -17,7 +26,7 @@ describe("Kotori#build", () => {
 
     stream.on("data", (file) => {
       assert.strictEqual(/-/.test(file.contents.toString()), true);
-      assert.strictEqual(file.relative, "test.css");
+      assert.strictEqual(file.relative, "test/cases/main.css");
     });
 
     stream.on("end", done);

@@ -7,8 +7,7 @@ import postcss from "postcss";
 import reporter from "postcss-reporter";
 import stylelint from "stylelint";
 import Config from "./config";
-import Stats from "./stats";
-import log from "./helper/log";
+import stats from "./stats";
 
 let currentConfig;
 
@@ -71,10 +70,16 @@ function transform(file, encode, callback) {
       file.contents = new Buffer(contents);
 
       if (currentConfig.stats) {
-        new Stats(file.path, currentConfig.stats);
+        stats(file.path, currentConfig.stats)
+          .then(() => {
+            setImmediate(callback, null, file);
+          })
+          .catch((err) => {
+            setImmediate(callback, err);
+          });
+      } else {
+        setImmediate(callback, null, file);
       }
-
-      setImmediate(callback, null, file);
     })
     .catch((err) => {
       setImmediate(callback, err);
