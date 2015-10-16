@@ -7,7 +7,7 @@ import postcss from "postcss";
 import reporter from "postcss-reporter";
 import stylelint from "stylelint";
 import Config from "./config";
-import stats from "./stats";
+import Stats from "./stats";
 
 let currentConfig;
 
@@ -70,7 +70,12 @@ function transform(file, encode, callback) {
       file.contents = new Buffer(contents);
 
       if (currentConfig.stats) {
-        stats(file.path, currentConfig.stats)
+        const stats = new Stats(file.path, currentConfig.stats);
+
+        stats.parseCSS()
+          .then((result) => {
+            return stats.writeStats(result);
+          })
           .then(() => {
             setImmediate(callback, null, file);
           })

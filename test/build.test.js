@@ -6,7 +6,6 @@ import File from "vinyl";
 
 import build from "../src/build";
 
-/** @test {Kotori#build} */
 describe("Kotori#build", () => {
   const testCSSPath = `${process.cwd()}/test/cases/main.css`;
   let testCSSFile = null;
