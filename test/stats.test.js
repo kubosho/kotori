@@ -14,12 +14,10 @@ describe("stats", () => {
       }
     };
 
-    return stats(`${process.cwd()}/test/cases/main.css`, statsConfig.stats)
-      .then((statsData) => {
-        assert.notStrictEqual(statsData, null);
-      })
-      .catch((err) => {
-        assert.strictEqual(err, null);
+    before((done) => {
+      fs.readFile(`${process.cwd()}/test/cases/stats-test-data.json`, (err, data) => {
+        statsTestData = data;
+        done();
       });
   });
 });
