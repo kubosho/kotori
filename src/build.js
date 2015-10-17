@@ -9,86 +9,94 @@ import stylelint from "stylelint";
 import Config from "./config";
 import Stats from "./stats";
 
-let currentConfig;
-
 /**
  * Kotori build based on config
- * @param {Object} conf - Kotori config (object or JSON)
- * @returns {Stream} Transform stream
+ * @param {Object} config - Kotori config (object or JSON)
  */
-export default function(conf) {
-  currentConfig = conf || new Config().getConfig();
+export default class Build {
+  constructor(config) {
+    this.config = config || new Config().getConfig();
 
-  try {
-    currentConfig = JSON.parse(currentConfig);
-  } catch (err) {
-    // do nothing
+    try {
+      this.config = JSON.parse(this.config);
+    } catch (err) {
+      // do nothing
+    }
+
+    if (this.config.env !== void 0) {
+      this.config.environment = this.config.env;
+    }
   }
 
-  if (currentConfig.env !== void 0) {
-    currentConfig.environment = currentConfig.env;
-  }
-
-  return through.obj(transform);
-}
-
-/**
- * Operate on written data, then read the result of each file
- * @param {File} file - chunk
- * @param {String} encode - file encode
- * @param {Function} callback - callback function
- * @private
- */
-function transform(file, encode, callback) {
-  if (file.isNull()) {
-    callback(null, file);
-    return;
-  }
-
-  if (file.isStream()) {
-    callback(Error("Stream is not supported"));
-    return;
-  }
-
-  const postcssPlugins = activatePostCSSPlugins(currentConfig);
-  const processor = postcss(postcssPlugins)
-    .process(file.contents.toString(), {
-      map : file.sourceMap ? {annotation: false} : false,
-      from: file.path,
-      to  : file.path
+  /**
+   * through2.obj() wrapper
+   * @returns {Stream} Transform stream
+   */
+  transform() {
+    return through.obj((file, encode, callback) => {
+      this.transformCore(this.config, file, encode, callback)
     });
+  }
 
-  processor
-    .then((res) => {
-      let contents = res.css;
+  /**
+   * Operate on written data, then read the result of each file
+   * @param {Object} config - Kotori config (object or JSON)
+   * @param {File} file - chunk
+   * @param {String} encode - file encode
+   * @param {Function} callback - callback function
+   * @private
+   */
+  transformCore(config, file, encode, callback) {
+    if (file.isNull()) {
+      callback(null, file);
+      return;
+    }
 
-      if (/product(?:ion)?/.test(currentConfig.environment)) {
-        const minified = new CleanCSS().minify(res.css);
-        contents = minified.styles;
-      }
+    if (file.isStream()) {
+      callback(Error("Stream is not supported"));
+      return;
+    }
 
-      file.contents = new Buffer(contents);
+    const postcssPlugins = activatePostCSSPlugins(config);
+    const processor = postcss(postcssPlugins)
+      .process(file.contents.toString(), {
+        map : file.sourceMap ? {annotation: false} : false,
+        from: file.path,
+        to  : file.path
+      });
 
-      if (currentConfig.stats) {
-        const stats = new Stats(file.path, currentConfig.stats);
+    processor
+      .then((res) => {
+        let contents = res.css;
 
-        stats.parseCSS()
-          .then((result) => {
-            return stats.writeStats(result);
-          })
-          .then(() => {
-            setImmediate(callback, null, file);
-          })
-          .catch((err) => {
-            setImmediate(callback, err);
-          });
-      } else {
-        setImmediate(callback, null, file);
-      }
-    })
-    .catch((err) => {
-      setImmediate(callback, err);
-    });
+        if (/product(?:ion)?/.test(config.environment)) {
+          const minified = new CleanCSS().minify(res.css);
+          contents = minified.styles;
+        }
+
+        file.contents = new Buffer(contents);
+
+        if (config.stats) {
+          const stats = new Stats(file.path, config.stats);
+
+          stats.parseCSS()
+            .then((result) => {
+              return stats.writeStats(result);
+            })
+            .then(() => {
+              setImmediate(callback, null, file);
+            })
+            .catch((err) => {
+              setImmediate(callback, err);
+            });
+        } else {
+          setImmediate(callback, null, file);
+        }
+      })
+      .catch((err) => {
+        setImmediate(callback, err);
+      });
+  }
 }
 
 /**

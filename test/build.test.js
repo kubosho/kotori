@@ -4,34 +4,39 @@ import fs from "fs";
 import path from "path";
 import File from "vinyl";
 
-import build from "../src/build";
+import Build from "../src/build";
 
-describe("Kotori#build", () => {
-  const testCSSPath = `${process.cwd()}/test/cases/main.css`;
-  let testCSSFile = null;
+/** @test {Build} */
+describe("Build", () => {
+  /** @test {Stats#transform} */
+  describe("Build#transform", () => {
+    const testCSSPath = `${process.cwd()}/test/cases/main.css`;
+    let testCSSFile = null;
 
-  before((done) => {
-    fs.readFile(testCSSPath, (err, data) => {
-      testCSSFile = new File({
-        path: testCSSPath,
-        contents: data
+    before((done) => {
+      fs.readFile(testCSSPath, (err, data) => {
+        testCSSFile = new File({
+          path: testCSSPath,
+          contents: data
+        });
+        done();
       });
-      done();
-    });
-  });
-
-  it("work properly", (done) => {
-    const stream = build();
-
-    stream.on("data", (file) => {
-      assert.strictEqual(/-/.test(file.contents.toString()), true);
-      assert.strictEqual(file.relative, path.join("test", "cases", "main.css"));
     });
 
-    stream.on("end", done);
+    it("work properly", (done) => {
+      const build = new Build();
+      const stream = build.transform();
 
-    stream.write(testCSSFile);
+      stream.on("data", (file) => {
+        assert.strictEqual(/-/.test(file.contents.toString()), true);
+        assert.strictEqual(file.relative, path.join("test", "cases", "main.css"));
+      });
 
-    stream.end();
+      stream.on("end", done);
+
+      stream.write(testCSSFile);
+
+      stream.end();
+    });
   });
 });

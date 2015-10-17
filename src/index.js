@@ -1,6 +1,6 @@
 import fs from "fs";
 import vfs from "vinyl-fs";
-import build from "./build";
+import Build from "./build";
 
 export default class Kotori {
   /**
@@ -14,11 +14,12 @@ export default class Kotori {
 
   /**
    * Operate on written data, then read the result of each file
-   * @param {Object} conf - Kotori config object
+   * @param {Object} config - Kotori config object
    * @returns {Stream} Transform stream
    */
-  build(conf) {
-    return build(conf);
+  build(config) {
+    const build = new Build(config);
+    return build.transform();
   }
 
   /**
