@@ -34,7 +34,7 @@ export default class Build {
    */
   transform() {
     return through.obj((file, encode, callback) => {
-      this.transformCore(this.config, file, encode, callback)
+      this.transformCore(this.config, file, callback)
     });
   }
 
@@ -42,11 +42,10 @@ export default class Build {
    * Operate on written data, then read the result of each file
    * @param {Object} config - Kotori config (object or JSON)
    * @param {File} file - chunk
-   * @param {String} encode - file encode
    * @param {Function} callback - callback function
    * @private
    */
-  transformCore(config, file, encode, callback) {
+  transformCore(config, file, callback) {
     if (file.isNull()) {
       callback(null, file);
       return;
