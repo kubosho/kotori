@@ -30,6 +30,7 @@ node_modules/
 
 .idea/
 lib/
+build/
 doc/
 stats/
 

@@ -30,16 +30,16 @@ export default class CLIEngline {
    */
   executeOnFiles(patterns) {
     if (patterns.length > 1) {
-      throw new Error("Specify input path of too many");
+      throw new Error("Input path of too many");
     } else if (patterns.length < 1) {
-      throw new Error("Must be specify input path");
+      throw new Error("Must specify input path");
     }
 
     const kotori = new Kotori();
     let src = patterns[0];
 
     if (path.extname(src) === "") {
-      src = `${src}/*.*`;
+      src = `${src}/*.css`;
     }
 
     return kotori.src(src)
