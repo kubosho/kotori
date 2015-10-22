@@ -30,7 +30,7 @@ export default class Config {
   }
 
   /**
-   * Build the Kotori config object
+   * Get project or user path Kotori config object
    * @returns {Object} Kotori config
  */
   getConfig() {
