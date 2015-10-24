@@ -22,6 +22,14 @@ describe("CLIEngine", () => {
   });
 
   describe("NG", () => {
+    it("throw error (Input path specify string)", () => {
+      const engine = new CLIEngine();
+
+      assert.throws(() => {
+        engine.executeOnFiles(`${process.cwd()}/test/cases/main.css`);
+      }, /specify array as argument/);
+    });
+
     it("throw error (Input path of too many)", () => {
       const engine = new CLIEngine();
 
@@ -33,7 +41,7 @@ describe("CLIEngine", () => {
       }, /too many/);
     });
 
-    it("throw error (Must specify input path)", () => {
+    it("throw error (Input path not specified)", () => {
       const engine = new CLIEngine();
 
       assert.throws(() => {
