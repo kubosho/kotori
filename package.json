@@ -49,6 +49,7 @@
   },
   "files": [
     "bin",
+    "conf",
     "lib"
   ],
   "homepage": "https://github.com/kubosho/kotori#readme",
