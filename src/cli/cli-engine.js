@@ -25,18 +25,22 @@ export default class CLIEngline {
 
   /**
    * Executes the current configuration on an array of file and directory names
-   * @param {String[]} patterns - An array of file and directory names
+   * @param {String[]} files - An array of file and directory names
    * @returns {Stream} Readable/Writable stream
    */
-  executeOnFiles(patterns) {
-    if (patterns.length > 1) {
+  executeOnFiles(files) {
+    if (!Array.isArray(files)) {
+      throw new Error("Must specify array as argument");
+    }
+
+    if (files.length > 1) {
       throw new Error("Input path of too many");
-    } else if (patterns.length < 1) {
+    } else if (files.length < 1) {
       throw new Error("Must specify input path");
     }
 
     const kotori = new Kotori();
-    let src = patterns[0];
+    let src = files[0];
 
     if (path.extname(src) === "") {
       src = `${src}/*.css`;

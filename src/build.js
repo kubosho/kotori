@@ -83,17 +83,17 @@ export default class Build {
               return stats.writeStats(result);
             })
             .then(() => {
-              setImmediate(callback, null, file);
+              callback(null, file);
             })
             .catch((err) => {
-              setImmediate(callback, err);
+              callback(err);
             });
         } else {
-          setImmediate(callback, null, file);
+          callback(null, file);
         }
       })
       .catch((err) => {
-        setImmediate(callback, err);
+        callback(err);
       });
   }
 }

@@ -1,6 +1,7 @@
 import CLIEngine from "./cli-engine";
-import log from "../helper/log";
+import Watch from "../watch";
 import options from "./options";
+import log from "../helper/log";
 import pkg from "../../package.json";
 
 export default {
@@ -31,10 +32,12 @@ export default {
       return 0;
     }
 
+    const engine = new CLIEngine(translateOptions(currentOptions));
+
     if (currentOptions.watch) {
-      // TODO: Implement watch mode. It maybe using chokidar.
+      const watch = new Watch(files);
+      watch.watcher(engine.executeOnFiles.bind(engine));
     } else {
-      const engine = new CLIEngine(translateOptions(currentOptions));
       engine.executeOnFiles(files);
     }
 
