@@ -106,12 +106,18 @@ export default class Build {
  */
 function activatePostCSSPlugins(config) {
   const plugins = [];
-  const lintRules = require(config.lintRules);
 
-  if (lintRules.rules) {
-    plugins.push(stylelint(lintRules));
-  } else {
-    throw new Error("Illegal lint rule: \"rules\" property is not found.");
+  if (config.lintRules || config.lintRules !== "") {
+    // TODO: Throw easy-to-understand error message
+    // incorrect path? (ex. "lintRules": "aaa")
+    // typo? (ex. "lintRules": "stylelint-config-suitcs")
+    const lintRules = require(config.lintRules);
+
+    if (lintRules.rules) {
+      plugins.push(stylelint(lintRules));
+    } else {
+      throw new Error("Illegal lint rule: \"rules\" property is not found.");
+    }
   }
 
   if (config.browsers && config.browsers !== "") {
