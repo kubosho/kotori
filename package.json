@@ -1,7 +1,7 @@
 {
   "name": "kotori",
   "description": "Kotori is a tool that automatically format and evaluate for CSS",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "author": "kubosho",
   "bin": {
     "kotori": "bin/kotori.js"
