@@ -10,22 +10,11 @@ const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` :
 export default class Config {
   constructor(filePath) {
     this.config = null;
-    this.configLoadError = [];
+    this.configLoadErrors = [];
+    this.filePath = filePath;
 
-    try {
-      this.config = loadConfig(PERSONAL_CONFIG_PATH);
-    } catch (err) {
-      this.configLoadError.push(err.message);
-    }
-
-    try {
-      this.config = loadConfig(filePath);
-    } catch (err) {
-      this.configLoadError.push(err.message);
-    }
-
-    if (this.configLoadError.length === 1) {
-      this.configLoadError = [];
+    if (this.filePath === void 0) {
+      this.filePath = `${process.cwd()}/${LOCAL_CONFIG_FILENAME}`;
     }
   }
 
@@ -34,53 +23,105 @@ export default class Config {
    * @returns {Object} Kotori config
  */
   getConfig() {
-    if (this.config === null && this.configLoadError.length > 0) {
+    try {
+      this.config = loadConfigCore(this.filePath);
+    } catch (err) {
+      this.configLoadErrors.push(err.message);
+    }
+
+    if (this.config !== null) {
+      try {
+        this.config = loadConfigCore(PERSONAL_CONFIG_PATH);
+      } catch (err) {
+        this.configLoadErrors.push(err.message);
+      }
+    }
+
+    if (this.config === null && this.configLoadErrors.length > 0) {
       const paths = `${PERSONAL_CONFIG_PATH} and ${path.resolve(process.cwd(), LOCAL_CONFIG_FILENAME)}`;
 
-      this.config = loadConfig(`${KOTORI_CONFIG_DIR}/${LOCAL_CONFIG_FILENAME}`);
+      this.config = loadConfigCore(`${KOTORI_CONFIG_DIR}/${LOCAL_CONFIG_FILENAME}`);
       log("info", `${paths} is not found, will use default config.`);
     }
 
-    return this.config;
+    return parseConfigCore(this.config);
+  }
+
+  /**
+   * Parse config
+   * @param {Object} configItem - Config object
+   * @returns {Object} Kotori config
+   */
+  parseConfig(configItem) {
+    return parseConfigCore(configItem);
   }
 }
 
 /**
- * Load config from object or local config file
+ * Load config core function, from object or local config file
  * @param {Object|String} configItem - Config object or file path
  * @returns {Object} Kotori config
  * @private
  */
-function loadConfig(configItem) {
-  let config = {};
-
-  if (isObject(configItem)) {
-    config = configItem;
-  } else if (typeof configItem === "string") {
-    config = readConfigFromFile(configItem);
+function loadConfigCore(configItem) {
+  if (typeof configItem === "string") {
+    configItem = fs.readFileSync(configItem, "utf8");
+  } else if (typeof configItem === "object") {
+    // do nothing
   } else {
     throw new Error("Unexpected config item type.");
   }
 
-  return config;
+  return configItem;
 }
 
 /**
- * Read the Kotori config file from local
- * @param {String} filePath - Config file path (JSON or Object format)
+ * Parse config core function
+ * @param {Object} configItem - Config object
  * @returns {Object} Kotori config
  * @private
  */
-function readConfigFromFile(filePath) {
-  return fs.readFileSync(filePath, "utf8");
+function parseConfigCore(configItem) {
+  if (isObject(configItem) || isJSON(configItem)) {
+    try {
+      configItem = JSON.parse(configItem);
+    } catch (err) {
+      // configItem is Object.
+      if (/^Unexpected token.*/.test(err.message)) {
+        return configItem;
+      }
+    }
+
+    return configItem;
+  }
 }
 
 /**
- * If an object is an object, returns true. false if it is not
+ * If an item is an object, returns true. false if it is not
  * @param {Object} item - Any object
  * @returns {Boolean}
  * @private
  */
 function isObject(item) {
   return typeof item === "object" && !Array.isArray(item) && item !== null;
+}
+
+/**
+ * If an item is an JSON, returns true. false if it is not
+ * @param {JSON} item - Any JSON
+ * @returns {Boolean}
+ * @private
+ */
+function isJSON(item) {
+  item = typeof item !== "string"
+    ? JSON.stringify(item)
+    : item;
+
+  try {
+    item = JSON.parse(item);
+  } catch (err) {
+    return false;
+  }
+
+  return (typeof item === "object" && item !== null);
 }

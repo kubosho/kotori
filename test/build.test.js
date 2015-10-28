@@ -35,7 +35,24 @@ describe("Build", () => {
       stream.on("end", done);
 
       stream.write(testCSSFile);
+      stream.end();
+    });
 
+    it("config.lintRules is empty, not throw error (not import lint package)", (done) => {
+      const conf = {
+        "lintRules": ""
+      };
+      const build = new Build(conf);
+      const stream = build.transform();
+
+      stream.on("data", (file) => {
+        assert.strictEqual(/-/.test(file.contents.toString()), true);
+        assert.strictEqual(file.relative, path.join("test", "cases", "main.css"));
+      });
+
+      stream.on("end", done);
+
+      stream.write(testCSSFile);
       stream.end();
     });
   });
