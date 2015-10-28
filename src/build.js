@@ -17,7 +17,7 @@ export default class Build {
   constructor(conf) {
     const config = new Config();
 
-    this.config = config.parseConfig(conf) || config.getConfig();
+    this.config = config.parse(conf) || config.load();
 
     if (this.config.env !== void 0) {
       this.config.environment = this.config.env;

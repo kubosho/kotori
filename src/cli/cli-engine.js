@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {
 export default class CLIEngline {
   constructor(options) {
     this.currentOptions = objectAssign(DEFAULT_OPTIONS, options);
-    this.config = new Config(this.currentOptions.config).getConfig();
+    this.config = new Config(this.currentOptions.config).load();
 
     if (this.currentOptions.output === "" || this.currentOptions.output == null) {
       this.currentOptions.output = process.cwd();

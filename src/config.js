@@ -19,10 +19,10 @@ export default class Config {
   }
 
   /**
-   * Get project or user path Kotori config object
+   * Load project or user path Kotori config object
    * @returns {Object} Kotori config
  */
-  getConfig() {
+  load() {
     try {
       this.config = loadConfigCore(this.filePath);
     } catch (err) {
@@ -52,7 +52,7 @@ export default class Config {
    * @param {Object} configItem - Config object
    * @returns {Object} Kotori config
    */
-  parseConfig(configItem) {
+  parse(configItem) {
     return parseConfigCore(configItem);
   }
 }
