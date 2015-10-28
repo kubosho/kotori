@@ -14,14 +14,10 @@ import Stats from "./stats";
  * @param {Object} config - Kotori config (object or JSON)
  */
 export default class Build {
-  constructor(config) {
-    this.config = config || new Config().getConfig();
+  constructor(conf) {
+    const config = new Config();
 
-    try {
-      this.config = JSON.parse(this.config);
-    } catch (err) {
-      // do nothing
-    }
+    this.config = config.parseConfig(conf) || config.getConfig();
 
     if (this.config.env !== void 0) {
       this.config.environment = this.config.env;
