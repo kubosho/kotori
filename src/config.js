@@ -10,7 +10,6 @@ const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` :
 export default class Config {
   constructor(filePath) {
     this.config = null;
-    this.configLoadErrors = [];
     this.filePath = filePath;
 
     if (this.filePath === void 0) {
@@ -23,21 +22,23 @@ export default class Config {
    * @returns {Object} Kotori config
  */
   load() {
+    let configLoadErrors = [];
+
     try {
       this.config = loadConfigCore(this.filePath);
     } catch (err) {
-      this.configLoadErrors.push(err.message);
+      configLoadErrors.push(err.message);
     }
 
     if (this.config !== null) {
       try {
         this.config = loadConfigCore(PERSONAL_CONFIG_PATH);
       } catch (err) {
-        this.configLoadErrors.push(err.message);
+        configLoadErrors.push(err.message);
       }
     }
 
-    if (this.config === null && this.configLoadErrors.length > 0) {
+    if (this.config === null && configLoadErrors.length > 0) {
       const paths = `${PERSONAL_CONFIG_PATH} and ${path.resolve(process.cwd(), LOCAL_CONFIG_FILENAME)}`;
 
       this.config = loadConfigCore(`${KOTORI_CONFIG_DIR}/${LOCAL_CONFIG_FILENAME}`);
