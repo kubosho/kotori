@@ -18,6 +18,7 @@
     "no-self-compare": 2,
     "no-else-return": 2,
     "no-throw-literal": 2,
+    "no-var": 2,
     "no-void": 2,
 
     "max-params": [1, 5],
