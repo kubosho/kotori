@@ -112,6 +112,34 @@ gulp.task("build:production", () => {
 
 Coming soon...
 
+## Config
+
+Config file example: [.kotorirc](https://github.com/kubosho/kotori/blob/master/conf/.kotorirc)
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+| browsers | String[] | [browserslist](https://github.com/ai/browserslist) queries. | ["last 2 version", "> 5%", "Firefox ESR"] |
+| env | String | if defined of "production" to minify CSS code. "development" if it will not minify. | "production" |
+| lintRules | String | Stylelint config package name | "stylelint-config-suitcss" |
+| stats | Object | StyleStats config | [stats config](#stats-config) object |
+
+### stats config
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+| outputFormat | String | file format | "json" |
+| outputDir | String | destination directory | "stats" |
+| timestamp | Boolean | if defined of true to add timestamp on stats file name | false |
+
+## CLI options
+
+| name | long name | type | description |
+| --- | --- | --- | --- |
+| -c | --config | String | Use configuration from this file or shareable config |
+| -o | --output | String | Specify CSS file output path |
+| -v | --version | - | Show version |
+| -h | --help | - | Show help |
+
 ## License
 
 The MIT License
