@@ -43,7 +43,7 @@ export default class Stats {
     const statsFileName = path.basename(this.statsTargetFilePath, path.extname(this.statsTargetFilePath));
     const statsOutputDir = `${process.cwd()}/${this.statsConf.outputDir}`;
     const format = new Format(statsData);
-    const formatData = selectFormat(this.statsConf.outputFormat, this.statsConf.templateFile);
+    const formatData = selectFormat(this.statsConf.outputFormat);
 
     return new Promise((resolve, reject) => {
       format[formatData.method]((result) => {
@@ -82,11 +82,10 @@ export default class Stats {
 /**
  * Select CSS statistics data format
  * @param {String} format
- * @param {String} templateFile
  * @returns {{extension: String, method: String}}
  * @private
  */
-function selectFormat(format, templateFile) {
+function selectFormat(format) {
   let method = "toTable";
   let extension = `.${format}`;
 
@@ -102,13 +101,6 @@ function selectFormat(format, templateFile) {
       break;
     case "md":
       method = "toMarkdown";
-      break;
-    case "template":
-      format.setTemplate(fs.readFileSync(templateFile, {
-        encoding: "utf8"
-      }));
-      extension = ".html";
-      method = "parseTemplate";
       break;
     default:
       break;
