@@ -9,6 +9,6 @@ export default function(type, ...data) {
     return;
   }
 
-  let log = Function.prototype.bind.call(console[type], console);
+  const log = Function.prototype.bind.call(console[type], console);
   log.apply(this, data);
 }
