@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import userHome from "user-home";
 import log from "./helper/log";
+import { isJSON, isObject } from "./helper/is";
 
 const KOTORI_CONFIG_DIR = path.resolve(__dirname, "../conf/");
 const LOCAL_CONFIG_FILENAME = ".kotorirc";
@@ -95,34 +96,4 @@ function parseConfigCore(configItem) {
 
     return configItem;
   }
-}
-
-/**
- * If an item is an object, returns true. false if it is not
- * @param {Object} item - Any object
- * @returns {Boolean}
- * @private
- */
-function isObject(item) {
-  return typeof item === "object" && !Array.isArray(item) && item !== null;
-}
-
-/**
- * If an item is an JSON, returns true. false if it is not
- * @param {JSON} item - Any JSON
- * @returns {Boolean}
- * @private
- */
-function isJSON(item) {
-  item = typeof item !== "string"
-    ? JSON.stringify(item)
-    : item;
-
-  try {
-    item = JSON.parse(item);
-  } catch (err) {
-    return false;
-  }
-
-  return (typeof item === "object" && item !== null);
 }
