@@ -1,5 +1,7 @@
 # Kotori (ことり) :baby_chick:
 
+![owner status](https://img.shields.io/badge/owner-busy-red.svg)
+
 [![Build Status](http://img.shields.io/travis/kubosho/kotori.svg)](https://travis-ci.org/kubosho/kotori)
 [![Build status](https://ci.appveyor.com/api/projects/status/0aionhon292p0y4q/branch/master?svg=true)](https://ci.appveyor.com/project/kubosho/kotori/branch/master)
 
