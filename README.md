@@ -114,7 +114,9 @@ gulp.task("build:production", () => {
 
 Coming soon...
 
-## Config
+## Reference
+
+### Config
 
 Config file example: [.kotorirc](https://github.com/kubosho/kotori/blob/master/conf/.kotorirc)
 
@@ -125,7 +127,7 @@ Config file example: [.kotorirc](https://github.com/kubosho/kotori/blob/master/c
 | lintRules | String | Stylelint config package name | "stylelint-config-suitcss" |
 | stats | Object | StyleStats config | [stats config](#stats-config) object |
 
-### stats config
+#### stats config
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
@@ -133,7 +135,7 @@ Config file example: [.kotorirc](https://github.com/kubosho/kotori/blob/master/c
 | outputDir | String | destination directory | "stats" |
 | timestamp | Boolean | if defined of true to add timestamp on stats file name | false |
 
-## CLI options
+### CLI options
 
 | name | long name | type | description |
 | --- | --- | --- | --- |
@@ -141,6 +143,10 @@ Config file example: [.kotorirc](https://github.com/kubosho/kotori/blob/master/c
 | -o | --output | String | Specify CSS file output path |
 | -v | --version | - | Show version |
 | -h | --help | - | Show help |
+
+## Changelog
+
+See [Releases · kubosho/kotori](https://github.com/kubosho/kotori/releases).
 
 ## License
 
