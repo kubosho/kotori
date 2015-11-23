@@ -1,0 +1,10 @@
+{
+  "browsers": [
+    "last 2 version",
+    "Android 2.3",
+    "Firefox ESR"
+  ],
+  "env": "development",
+  "lintRules": "stylelint-config-suitcss"
+}
+
