@@ -1,12 +1,12 @@
 import fs from "fs";
+import os from "os";
 import path from "path";
-import userHome from "user-home";
 import log from "./helper/log";
 import { isJSON, isObject } from "./helper/is";
 
 const KOTORI_CONFIG_DIR = path.resolve(__dirname, "../conf/");
 const LOCAL_CONFIG_FILENAME = ".kotorirc";
-const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;
+const PERSONAL_CONFIG_PATH = os.homedir() ? `${os.homedir()}/${LOCAL_CONFIG_FILENAME}` : null;
 
 export default class Config {
   constructor(filePath) {

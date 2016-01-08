@@ -23,7 +23,6 @@
     "stylelint-config-suitcss": "^0.5.1",
     "stylestats": "^6.0.0",
     "through2": "^2.0.0",
-    "user-home": "^2.0.0",
     "vinyl-fs": "^2.2.0"
   },
   "devDependencies": {
@@ -45,7 +44,7 @@
     "test": "test"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=5.0.0"
   },
   "files": [
     "bin",
