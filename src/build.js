@@ -2,7 +2,7 @@ import fs from "fs";
 import through from "through2";
 import autoprefixer from "autoprefixer";
 import CleanCSS from "clean-css";
-import cssfmt from "cssfmt";
+import { cssfmt } from "cssfmt";
 import postcss from "postcss";
 import reporter from "postcss-reporter";
 import stylelint from "stylelint";
