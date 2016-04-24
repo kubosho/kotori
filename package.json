@@ -68,7 +68,7 @@
   "scripts": {
     "build": "npm run trash && babel src --out-dir lib & esdoc -c esdoc.json",
     "ci": "npm run build && npm run coverage && npm run trash && empty-trash",
-    "coverage": "nyc --require babel-core/register --reporter=lcov --reporter=text mocha",
+    "coverage": "nyc --require babel-register --reporter=lcov --reporter=text mocha",
     "lint": "eslint src/**/*.js",
     "package-update": "npm-check -u",
     "start": "npm run build && npm test",
