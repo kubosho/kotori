@@ -71,7 +71,7 @@
     "package-update": "npm-check -u",
     "start": "npm run build && npm test",
     "trash": "trash build stats lib",
-    "test": "mocha --compilers js:espower-babel/guess --require test/bootstrap.js test/**/*.test.js",
+    "test": "mocha test/**/*.test.js",
     "watch": "babel src --watch --out-dir lib"
   }
 }
