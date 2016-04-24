@@ -1,5 +1,7 @@
 "use strict";
 
+import assert from "power-assert";
+
 import fs from "fs";
 import File from "vinyl";
 import Stats from "../src/stats";

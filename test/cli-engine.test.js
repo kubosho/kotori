@@ -1,5 +1,7 @@
 "use strict";
 
+import assert from "power-assert";
+
 import fs from "fs";
 import CLIEngine from "../src/cli/cli-engine";
 
