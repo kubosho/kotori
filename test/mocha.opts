@@ -1,2 +1,1 @@
---compilers js:espower-babel/guess
---require test/bootstrap.js
+--compilers js:babel-register

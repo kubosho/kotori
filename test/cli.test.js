@@ -1,5 +1,7 @@
 "use strict";
 
+import assert from "power-assert";
+
 import cli from "../src/cli/cli";
 
 /** @test {cli} */
