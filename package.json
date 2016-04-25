@@ -65,9 +65,9 @@
     "url": "git+ssh://git@github.com/kubosho/kotori.git"
   },
   "scripts": {
-    "build": "npm run trash && babel src --out-dir lib & esdoc -c esdoc.json",
+    "build": "npm run trash && babel src --out-dir lib",
     "ci": "npm run build && npm run coverage && npm run trash && empty-trash",
-    "coverage": "nyc --require babel-register --reporter=lcov --reporter=text mocha",
+    "coverage": "nyc --require babel-register --reporter=lcov --reporter=text mocha && esdoc -c esdoc.json",
     "lint": "eslint src/**/*.js",
     "start": "npm run build && npm test",
     "trash": "trash build stats lib",
