@@ -2,19 +2,20 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true,
+    "node": true
   },
 
-  "ecmaFeatures": {
-    "modules": true,
-    "jsx": true
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "jsx": true
+    }
   },
 
   "rules": {
     "strict": 0,
 
     "default-case": 2,
-    "dot-location": [2, "object"],
     "no-self-compare": 2,
     "no-else-return": 2,
     "no-throw-literal": 2,
@@ -51,7 +52,7 @@
 
     "id-length": [2, {
       "min": 2,
-      "max": 12,
+      "max": 16,
       "exceptions": ["h", "i", "l", "v", "x", "y", "z"]
     }],
     "id-match": [2, "^[a-z|A-Z]+([A-Z][a-z]+)*$", {
@@ -73,7 +74,7 @@
 
     "space-before-function-paren": [2, "never"],
     "space-before-blocks": [2, "always"],
-    "space-after-keywords": [2, "always"],
+    "keyword-spacing": 2,
 
     "key-spacing": [2, {
       "align": "colon",
@@ -105,6 +106,6 @@
         "VariableDeclarator": true,
         "AssignmentExpression": true
       }
-    }],
+    }]
   }
 }
