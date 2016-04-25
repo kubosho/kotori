@@ -1,10 +1,10 @@
 import CLIEngine from "./cli-engine";
 import Watch from "../watch";
 import options from "./options";
-import log from "../helper/log";
 import pkg from "../../package.json";
 
 export default {
+
   /**
    * Executes the CLI based on an array of arguments that is passed
    * @param {String[]} args - The arguments to process
@@ -16,16 +16,16 @@ export default {
     try {
       currentOptions = options.parse(args);
     } catch (error) {
-      log("error", error.message);
+      console.error(error.message);
       return 1;
     }
 
     const files = currentOptions._;
 
     if (currentOptions.version) {
-      log("log", `v${pkg.version}`);
+      console.log(`v${pkg.version}`);
     } else if (currentOptions.help) {
-      log("log", options.generateHelp());
+      console.log(options.generateHelp());
     }
 
     if (currentOptions.version || currentOptions.help) {

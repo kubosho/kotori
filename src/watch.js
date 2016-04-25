@@ -1,5 +1,4 @@
 import chokidar from "chokidar";
-import log from "./helper/log";
 
 /**
  * File watch class
@@ -23,7 +22,7 @@ export default class Watch {
     this.watch
       .on("all", (eventType, path) => {
         if (eventType === "add" || eventType === "change") {
-          log("info", `${eventType}: ${path}`);
+          console.info(`${eventType}: ${path}`);
 
           try {
             cb([path]);

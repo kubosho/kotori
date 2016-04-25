@@ -3,7 +3,6 @@ import path from "path";
 import moment from "moment";
 import StyleStats from "stylestats";
 import Format from "stylestats/lib/format";
-import log from "./helper/log";
 
 /**
  * Statistics of CSS file and stats data outputs
@@ -50,7 +49,7 @@ export default class Stats {
         const statsContents = new Buffer(result);
 
         if (!this.statsConf.outputDir || this.statsConf.outputDir === "") {
-          log("log", result);
+          console.log(result);
           resolve(result);
           return;
         }

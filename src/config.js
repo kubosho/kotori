@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import userHome from "user-home";
-import log from "./helper/log";
 import { isJSON, isObject } from "./helper/is";
 
 const KOTORI_CONFIG_DIR = path.resolve(__dirname, "../conf/");
@@ -43,7 +42,7 @@ export default class Config {
       const paths = `${PERSONAL_CONFIG_PATH} and ${path.resolve(process.cwd(), LOCAL_CONFIG_FILENAME)}`;
 
       this.config = loadConfigCore(`${KOTORI_CONFIG_DIR}/${LOCAL_CONFIG_FILENAME}`);
-      log("info", `${paths} is not found, will use default config.`);
+      console.info(`${paths} is not found, will use default config.`);
     }
 
     return parseConfigCore(this.config);
