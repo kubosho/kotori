@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import File from "vinyl";
 
-import Build from "../src/build";
+import Build from "../lib/build";
 
 /** @test {Build} */
 describe("Build", () => {

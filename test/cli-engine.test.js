@@ -3,7 +3,7 @@
 import assert from "power-assert";
 
 import fs from "fs";
-import CLIEngine from "../src/cli/cli-engine";
+import CLIEngine from "../lib/cli/cli-engine";
 
 /** @test {CLIEngine} */
 describe("CLIEngine", () => {

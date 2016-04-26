@@ -2,7 +2,7 @@
 
 import assert from "power-assert";
 
-import cli from "../src/cli/cli";
+import cli from "../lib/cli/cli";
 
 /** @test {cli} */
 describe("cli", () => {

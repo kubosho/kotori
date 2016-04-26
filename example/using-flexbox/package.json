@@ -4,12 +4,13 @@
   "description": "",
   "private": true,
   "scripts": {
+    "version": "kotori -v",
     "start": "kotori styles/main.css -o dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "kubosho",
   "license": "MIT",
   "devDependencies": {
-    "kotori": "^0.8.1"
+    "kotori": "file:../.."
   }
 }
