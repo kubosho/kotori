@@ -34,7 +34,7 @@
     "coveralls": "^2.11.4",
     "empty-trash-cli": "^1.0.0",
     "esdoc": "^0.4.3",
-    "eslint": "^2.2.0",
+    "eslint": "^2.9.0",
     "fs-extra": "^0.30.0",
     "mocha": "^2.3.4",
     "nyc": "^6.4.0",
