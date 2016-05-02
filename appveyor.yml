@@ -1,7 +1,7 @@
 version: "{build}"
 
 init:
-  - git config --global core.autocrlf true
+  - git config --global core.autocrlf false
 
 environment:
   matrix:
