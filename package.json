@@ -33,7 +33,7 @@
     "babel-register": "^6.7.2",
     "coveralls": "^2.11.4",
     "empty-trash-cli": "^1.0.0",
-    "esdoc": "^0.4.3",
+    "esdoc": "^0.4.7",
     "eslint": "^2.9.0",
     "fs-extra": "^0.30.0",
     "mocha": "^2.3.4",
