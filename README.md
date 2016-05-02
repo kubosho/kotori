@@ -1,7 +1,6 @@
 # Kotori (ことり) :baby_chick:
 
 [![Build Status](http://img.shields.io/travis/kubosho/kotori.svg)](https://travis-ci.org/kubosho/kotori)
-[![Build status](https://ci.appveyor.com/api/projects/status/0aionhon292p0y4q/branch/master?svg=true)](https://ci.appveyor.com/project/kubosho/kotori/branch/master)
 [![Coverage Status](https://coveralls.io/repos/kubosho/kotori/badge.svg?branch=master&service=github)](https://coveralls.io/github/kubosho/kotori?branch=master)
 
 [![npm version](https://img.shields.io/npm/v/kotori.svg)](https://www.npmjs.com/package/kotori)
