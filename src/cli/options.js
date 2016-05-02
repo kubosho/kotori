@@ -1,39 +1,39 @@
 #!/usr/bin/env node
 
-import optionator from "optionator";
+import optionator from 'optionator';
 
 export default optionator({
-  prepend: "Usage: kotori [options] <input (support glob pattern)> [-o] <output>",
+  prepend: 'Usage: kotori [options] <input (support glob pattern)> [-o] <output>',
   options: [{
-    heading: "Mode configuration"
+    heading: 'Mode configuration',
   }, {
-    option     : "watch",
-    alias      : "w",
-    type       : "Boolean",
-    description: "Watch mode for Kotori builds"
+    option: 'watch',
+    alias: 'w',
+    type: 'Boolean',
+    description: 'Watch mode for Kotori builds',
   }, {
-    heading: "Path configuration"
+    heading: 'Path configuration',
   }, {
-    option     : "config",
-    alias      : "c",
-    type       : "path::String",
-    description: "Use configuration from this file or shareable config"
+    option: 'config',
+    alias: 'c',
+    type: 'path::String',
+    description: 'Use configuration from this file or shareable config',
   }, {
-    option     : "output",
-    alias      : "o",
-    type       : "path::String",
-    description: "Specify output path"
+    option: 'output',
+    alias: 'o',
+    type: 'path::String',
+    description: 'Specify output path',
   }, {
-    heading: "Miscellaneous"
+    heading: 'Miscellaneous',
   }, {
-    option     : "help",
-    alias      : "h",
-    type       : "Boolean",
-    description: "Show help"
+    option: 'help',
+    alias: 'h',
+    type: 'Boolean',
+    description: 'Show help',
   }, {
-    option     : "version",
-    alias      : "v",
-    type       : "Boolean",
-    description: "Show version"
-  }]
+    option: 'version',
+    alias: 'v',
+    type: 'Boolean',
+    description: 'Show version',
+  }],
 });

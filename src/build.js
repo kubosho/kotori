@@ -1,13 +1,44 @@
-import fs from "fs";
-import through from "through2";
-import autoprefixer from "autoprefixer";
-import CleanCSS from "clean-css";
-import { cssfmt } from "cssfmt";
-import postcss from "postcss";
-import reporter from "postcss-reporter";
-import stylelint from "stylelint";
-import Config from "./config";
-import Stats from "./stats";
+import through from 'through2';
+import autoprefixer from 'autoprefixer';
+import CleanCSS from 'clean-css';
+import { cssfmt } from 'cssfmt';
+import postcss from 'postcss';
+import reporter from 'postcss-reporter';
+import stylelint from 'stylelint';
+import Config from './config';
+import Stats from './stats';
+
+/**
+ * Activating PostCSS plugins
+ * @param {Object} config - Kotori config object
+ * @returns {Function[]} PostCSS plugins list
+ * @private
+ */
+function activatePostCSSPlugins(config) {
+  const plugins = [];
+
+  if (config.lintRules || config.lintRules !== '') {
+    // TODO: Throw easy-to-understand error message
+    // incorrect path? (ex. 'lintRules': 'aaa')
+    // typo? (ex. 'lintRules': 'stylelint-config-suitcs')
+    const lintRules = require(config.lintRules);
+
+    if (lintRules.rules) {
+      plugins.push(stylelint(lintRules));
+    } else {
+      throw new Error('Illegal lint rule: \'rules\' property is not found.');
+    }
+  }
+
+  if (config.browsers && config.browsers !== '') {
+    plugins.push(autoprefixer(config.browsers));
+  }
+
+  plugins.push(cssfmt);
+  plugins.push(reporter);
+
+  return plugins;
+}
 
 /**
  * Kotori build based on config
@@ -30,7 +61,7 @@ export default class Build {
    */
   transform() {
     return through.obj((file, encode, callback) => {
-      this.transformCore(this.config, file, callback)
+      this.transformCore(this.config, file, callback);
     });
   }
 
@@ -48,16 +79,16 @@ export default class Build {
     }
 
     if (file.isStream()) {
-      callback(Error("Stream is not supported"));
+      callback(Error('Stream is not supported'));
       return;
     }
 
     const postcssPlugins = activatePostCSSPlugins(config);
     const processor = postcss(postcssPlugins)
       .process(file.contents.toString(), {
-        map : file.sourceMap ? {annotation: false} : false,
+        map: file.sourceMap ? { annotation: false } : false,
         from: file.path,
-        to  : file.path
+        to: file.path,
       });
 
     processor
@@ -92,36 +123,4 @@ export default class Build {
         callback(err);
       });
   }
-}
-
-/**
- * Activating PostCSS plugins
- * @param {Object} config - Kotori config object
- * @returns {Function[]} PostCSS plugins list
- * @private
- */
-function activatePostCSSPlugins(config) {
-  const plugins = [];
-
-  if (config.lintRules || config.lintRules !== "") {
-    // TODO: Throw easy-to-understand error message
-    // incorrect path? (ex. "lintRules": "aaa")
-    // typo? (ex. "lintRules": "stylelint-config-suitcs")
-    const lintRules = require(config.lintRules);
-
-    if (lintRules.rules) {
-      plugins.push(stylelint(lintRules));
-    } else {
-      throw new Error("Illegal lint rule: \"rules\" property is not found.");
-    }
-  }
-
-  if (config.browsers && config.browsers !== "") {
-    plugins.push(autoprefixer(config.browsers));
-  }
-
-  plugins.push(cssfmt);
-  plugins.push(reporter);
-
-  return plugins;
 }

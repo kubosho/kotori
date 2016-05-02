@@ -1,7 +1,7 @@
-import CLIEngine from "./cli-engine";
-import Watch from "../watch";
-import options from "./options";
-import pkg from "../../package.json";
+import CLIEngine from './cli-engine';
+import Watch from '../watch';
+import options from './options';
+import pkg from '../../package.json';
 
 /**
  * Translates the CLI options into the options expected by the CLIEngine
@@ -13,7 +13,7 @@ function translateOptions(cliOptions) {
   return {
     config: cliOptions.config,
     output: cliOptions.output,
-    watch : cliOptions.watch
+    watch: cliOptions.watch,
   };
 }
 
@@ -22,7 +22,7 @@ function translateOptions(cliOptions) {
  * @param {String[]} args - The arguments to process
  * @returns {Number} The exit code for the operation
  */
-export default function(args) {
+export default function (args) {
   let currentOptions;
 
   try {

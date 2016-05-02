@@ -1,4 +1,4 @@
-import chokidar from "chokidar";
+import chokidar from 'chokidar';
 
 /**
  * File watch class
@@ -10,7 +10,7 @@ export default class Watch {
     this.watch = chokidar.watch(this.files, {
       ignored: /[\/\\]\./,
       ignoreInitial: true,
-      persistent: true
+      persistent: true,
     });
   }
 
@@ -20,8 +20,8 @@ export default class Watch {
    */
   watcher(cb) {
     this.watch
-      .on("all", (eventType, path) => {
-        if (eventType === "add" || eventType === "change") {
+      .on('all', (eventType, path) => {
+        if (eventType === 'add' || eventType === 'change') {
           console.info(`${eventType}: ${path}`);
 
           try {

@@ -1,11 +1,50 @@
-import fs from "fs";
-import path from "path";
-import userHome from "user-home";
-import { isJSON, isObject } from "./helper/is";
+import fs from 'fs';
+import path from 'path';
+import userHome from 'user-home';
+import { isJSON, isObject } from './helper/is';
 
-const KOTORI_CONFIG_DIR = path.resolve(__dirname, "../conf/");
-const LOCAL_CONFIG_FILENAME = ".kotorirc";
+const KOTORI_CONFIG_DIR = path.resolve(__dirname, '../conf/');
+const LOCAL_CONFIG_FILENAME = '.kotorirc';
 const PERSONAL_CONFIG_PATH = userHome ? `${userHome}/${LOCAL_CONFIG_FILENAME}` : null;
+
+/**
+ * Load config core function, from object or local config file
+ * @param {Object|String} configItem - Config object or file path
+ * @returns {Object} Kotori config
+ * @private
+ */
+function loadConfigCore(configItem) {
+  if (typeof configItem === 'string') {
+    configItem = fs.readFileSync(configItem, 'utf8');
+  } else if (typeof configItem === 'object') {
+    // do nothing
+  } else {
+    throw new Error('Unexpected config item type.');
+  }
+
+  return configItem;
+}
+
+/**
+ * Parse config core function
+ * @param {Object} configItem - Config object
+ * @returns {Object} Kotori config
+ * @private
+ */
+function parseConfigCore(configItem) {
+  if (isObject(configItem) || isJSON(configItem)) {
+    try {
+      configItem = JSON.parse(configItem);
+    } catch (err) {
+      // configItem is Object.
+      if (/^Unexpected token.*/.test(err.message)) {
+        return configItem;
+      }
+    }
+
+    return configItem;
+  }
+}
 
 export default class Config {
   constructor(filePath) {
@@ -22,7 +61,7 @@ export default class Config {
    * @returns {Object} Kotori config
  */
   load() {
-    let configLoadErrors = [];
+    const configLoadErrors = [];
 
     try {
       this.config = loadConfigCore(this.filePath);
@@ -55,44 +94,5 @@ export default class Config {
    */
   parse(configItem) {
     return parseConfigCore(configItem);
-  }
-}
-
-/**
- * Load config core function, from object or local config file
- * @param {Object|String} configItem - Config object or file path
- * @returns {Object} Kotori config
- * @private
- */
-function loadConfigCore(configItem) {
-  if (typeof configItem === "string") {
-    configItem = fs.readFileSync(configItem, "utf8");
-  } else if (typeof configItem === "object") {
-    // do nothing
-  } else {
-    throw new Error("Unexpected config item type.");
-  }
-
-  return configItem;
-}
-
-/**
- * Parse config core function
- * @param {Object} configItem - Config object
- * @returns {Object} Kotori config
- * @private
- */
-function parseConfigCore(configItem) {
-  if (isObject(configItem) || isJSON(configItem)) {
-    try {
-      configItem = JSON.parse(configItem);
-    } catch (err) {
-      // configItem is Object.
-      if (/^Unexpected token.*/.test(err.message)) {
-        return configItem;
-      }
-    }
-
-    return configItem;
   }
 }

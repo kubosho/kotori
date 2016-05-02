@@ -5,7 +5,7 @@
  * @private
  */
 export function isObject(item) {
-  return typeof item === "object" && !Array.isArray(item) && item !== null;
+  return typeof item === 'object' && !Array.isArray(item) && item !== null;
 }
 
 /**
@@ -15,7 +15,7 @@ export function isObject(item) {
  * @private
  */
 export function isJSON(item) {
-  item = typeof item !== "string"
+  item = typeof item !== 'string'
     ? JSON.stringify(item)
     : item;
 
@@ -25,5 +25,5 @@ export function isJSON(item) {
     return false;
   }
 
-  return (typeof item === "object" && item !== null);
+  return (typeof item === 'object' && item !== null);
 }

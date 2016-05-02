@@ -1,12 +1,12 @@
-import path from "path";
-import objectAssign from "object-assign";
-import Config from "../config";
-import Kotori from "../index";
+import path from 'path';
+import objectAssign from 'object-assign';
+import Config from '../config';
+import Kotori from '../index';
 
 const defaultOptions = {
-  config: "",
+  config: '',
   output: null,
-  watch : false
+  watch: false,
 };
 
 /**
@@ -18,7 +18,7 @@ export default class CLIEngline {
     this.currentOptions = objectAssign(defaultOptions, options);
     this.config = new Config(this.currentOptions.config).load();
 
-    if (this.currentOptions.output === "" || this.currentOptions.output == null) {
+    if (this.currentOptions.output === '' || this.currentOptions.output == null) {
       this.currentOptions.output = process.cwd();
     }
   }
@@ -30,19 +30,19 @@ export default class CLIEngline {
    */
   executeOnFiles(files) {
     if (!Array.isArray(files)) {
-      throw new Error("Must specify array as argument");
+      throw new Error('Must specify array as argument');
     }
 
     if (files.length > 1) {
-      throw new Error("Input path of too many");
+      throw new Error('Input path of too many');
     } else if (files.length < 1) {
-      throw new Error("Must specify input path");
+      throw new Error('Must specify input path');
     }
 
     const kotori = new Kotori();
     let src = files[0];
 
-    if (path.extname(src) === "") {
+    if (path.extname(src) === '') {
       src = `${src}/*.css`;
     }
 

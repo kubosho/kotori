@@ -1,8 +1,40 @@
-import fs from "fs";
-import path from "path";
-import moment from "moment";
-import StyleStats from "stylestats";
-import Format from "stylestats/lib/format";
+import fs from 'fs';
+import path from 'path';
+import moment from 'moment';
+import StyleStats from 'stylestats';
+import Format from 'stylestats/lib/format';
+
+/**
+ * Select CSS statistics data format
+ * @param {String} format
+ * @returns {{extension: String, method: String}}
+ * @private
+ */
+function selectFormat(format) {
+  const extension = `.${format}`;
+  let method = 'toTable';
+
+  switch (format) {
+    case 'json':
+      method = 'toJSON';
+      break;
+    case 'csv':
+      method = 'toCSV';
+      break;
+    case 'html':
+      method = 'toHTML';
+      break;
+    case 'md':
+      method = 'toMarkdown';
+      break;
+    default:
+      break;
+  }
+
+  return {
+    extension, method,
+  };
+}
 
 /**
  * Statistics of CSS file and stats data outputs
@@ -48,7 +80,7 @@ export default class Stats {
       format[formatData.method]((result) => {
         const statsContents = new Buffer(result);
 
-        if (!this.statsConf.outputDir || this.statsConf.outputDir === "") {
+        if (!this.statsConf.outputDir || this.statsConf.outputDir === '') {
           console.log(result);
           resolve(result);
           return;
@@ -57,7 +89,7 @@ export default class Stats {
         let statsPath = `${statsFileName}${formatData.extension}`;
 
         if (this.statsConf.timestamp) {
-          const statsTimeStamp = moment().format("YYYYMMDDHHmmss");
+          const statsTimeStamp = moment().format('YYYYMMDDHHmmss');
           statsPath = `${statsFileName}.${statsTimeStamp}${formatData.extension}`;
         }
 
@@ -75,38 +107,5 @@ export default class Stats {
         }
       });
     });
-  }
-}
-
-/**
- * Select CSS statistics data format
- * @param {String} format
- * @returns {{extension: String, method: String}}
- * @private
- */
-function selectFormat(format) {
-  let method = "toTable";
-  let extension = `.${format}`;
-
-  switch (format) {
-    case "json":
-      method = "toJSON";
-      break;
-    case "csv":
-      method = "toCSV";
-      break;
-    case "html":
-      method = "toHTML";
-      break;
-    case "md":
-      method = "toMarkdown";
-      break;
-    default:
-      break;
-  }
-
-  return {
-    extension: extension,
-    method: method
   }
 }

@@ -1,6 +1,5 @@
-import fs from "fs";
-import vfs from "vinyl-fs";
-import Build from "./build";
+import vfs from 'vinyl-fs';
+import Build from './build';
 
 export default class Kotori {
   /**
