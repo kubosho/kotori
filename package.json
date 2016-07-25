@@ -12,7 +12,7 @@
   "dependencies": {
     "autoprefixer": "^6.1.0",
     "chokidar": "^1.2.0",
-    "clean-css": "^3.4.8",
+    "clean-css": "^3.4.19",
     "cssfmt": "^2.1.4",
     "moment": "^2.11.2",
     "object-assign": "^4.0.1",
