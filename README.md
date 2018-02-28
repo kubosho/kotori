@@ -1,4 +1,6 @@
-# Kotori (ことり) :baby_chick:
+# [Unmainted] Kotori (ことり) :baby_chick:
+
+**No longer actively maintaining this project due to lack of motivation. This project and source code keep on GitHub and on npm, but no longer maintaining in my side.**
 
 [![Build Status](http://img.shields.io/travis/kubosho/kotori.svg)](https://travis-ci.org/kubosho/kotori)
 [![Coverage Status](https://coveralls.io/repos/kubosho/kotori/badge.svg?branch=master&service=github)](https://coveralls.io/github/kubosho/kotori?branch=master)
